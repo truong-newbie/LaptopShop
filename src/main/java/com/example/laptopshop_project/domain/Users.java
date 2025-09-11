@@ -1,0 +1,42 @@
+package com.example.laptopshop_project.domain;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
+
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name="users")
+public class Users {
+
+    @Id
+    @GeneratedValue( strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String password;
+    private String email;
+    private String fullName;
+    private String address;
+    private String phone;
+    private String avatar;
+    private Long roled;
+
+    @ManyToOne
+    @JoinColumn(name= "role_id")
+    private Roles roles;
+
+    @OneToMany(mappedBy = "users")
+    private List<Orders> orders;
+
+    @OneToMany(mappedBy = "users")
+    private List<Products> products;
+
+
+
+}
