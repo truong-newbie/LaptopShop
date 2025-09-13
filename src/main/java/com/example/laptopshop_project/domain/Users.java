@@ -28,14 +28,11 @@ public class Users {
     private Long roled;
 
     @ManyToOne
-    @JoinColumn(name= "role_id")
-    private Roles roles;
+    @JoinColumn(name = "role_id")
+    private Roles role;
 
-    @OneToMany(mappedBy = "users")
-    private List<Orders> orders;
-
-    @OneToMany(mappedBy = "users")
-    private List<Products> products;
+    @OneToMany( mappedBy = "user")
+    List<Orders> orders;
 
 
 

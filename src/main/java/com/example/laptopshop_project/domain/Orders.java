@@ -1,7 +1,6 @@
 package com.example.laptopshop_project.domain;
 
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,19 +15,18 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Orders {
+public class Orders{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long userId;
     private double totalPrice;
 
     @ManyToOne
-    @JoinColumn(name="user_id")
-    private Users users;
+    @JoinColumn(name = "user_id")
+    private Users user;
 
-
-
+    @OneToMany( mappedBy = "orders")
+    private List<OrderDetail> orderDetails;
 
 }

@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Table(name= "products")
 @Setter
@@ -28,9 +30,8 @@ public class Products {
     private String factory;
     private String target;
 
-    @ManyToOne
-    @JoinColumn(name="user_id")
-    private Users users;
+    @OneToMany(mappedBy = "products")
+    private List<OrderDetail> orderDetails;
 
 
 
