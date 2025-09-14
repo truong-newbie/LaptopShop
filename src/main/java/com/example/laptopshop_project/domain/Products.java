@@ -19,14 +19,14 @@ public class Products {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
     private String name;
     private double price;
     private String image;
     private String detailDesc;
     private String shortDesc;
-    private Long quantity;
-    private Long sold;
+    private long quantity;
+    private long sold;
     private String factory;
     private String target;
 
