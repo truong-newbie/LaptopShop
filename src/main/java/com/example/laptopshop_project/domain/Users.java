@@ -28,7 +28,7 @@ public class Users {
     private String avatar;
     private Long roled;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "role_id")
     private Roles role;
 
