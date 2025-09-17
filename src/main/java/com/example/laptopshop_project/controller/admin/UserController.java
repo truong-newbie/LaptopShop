@@ -63,6 +63,7 @@ public class UserController {
 
     @PostMapping("/admin/user/update/{id}")
     public String updateUser1(@PathVariable long id, @ModelAttribute("updateUser") Users updateUser) {
+        updateUser.setRole(this.userService.getRoleByName(updateUser.getRole().getName()));
         userService.updateUser(id, updateUser);
         return "redirect:/admin/user";
     }

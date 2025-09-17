@@ -37,6 +37,7 @@ public class UserService {
         existingUser.setFullName(updatedUser.getFullName());
         existingUser.setPhone(updatedUser.getPhone());
         existingUser.setAddress(updatedUser.getAddress());
+        existingUser.setRole(updatedUser.getRole());
 
         return this.userRepository.save(existingUser);
     }

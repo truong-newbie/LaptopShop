@@ -30,7 +30,8 @@
                         <div class="col-md-6 col-12 mx-auto">'
                             <h3> Update User</h3>
                             <hr/>
-                            <form:form  method="post" action="/admin/user/update/${user.id}" modelAttribute="updateUser" >
+                            <form:form  method="post" action="/admin/user/update/${user.id}" modelAttribute="updateUser"
+                                        enctype="multipart/form-data">
                                 <div class="mb-3">
                                     <label class="form-label"> Email:</label>
                                     <form:input type="email" class="form-control" path="email"/>
@@ -47,6 +48,16 @@
                                     <label class="form-label">Address:</label>
                                     <form:input type="text" class="form-control" path="address"/>
                                 </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">Role:</label>
+                                        <form:select class="form-select" path="role.name">
+                                            <form:option value="ADMIN">ADMIN</form:option>
+                                            <form:option value="USER">USER</form:option>
+                                        </form:select>
+                                    </div>
+
+
                                 <button type="submit" class="btn btn-primary">Submit</button>
 
                             </form:form>

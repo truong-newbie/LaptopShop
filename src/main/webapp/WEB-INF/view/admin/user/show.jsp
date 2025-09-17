@@ -37,6 +37,7 @@
                             <td>Id</td>
                             <td>Email</td>
                             <td>Fullname</td>
+                            <td>Role</td>
                             <td>Action</td>
                         </tr>
                         <c:forEach var="user" items="${users}">
@@ -45,6 +46,7 @@
                                 <td>${user.id}</td>
                                 <td>${user.email}</td>
                                 <td>${user.fullName}</td>
+                                <td>${user.role.name}</td>
                                 <td>
                                     <a href="/admin/user/${user.id}" class="btn btn-success">View</a>
                                         <%--                    <button type="button" class="btn btn-success" > View</button>--%>
