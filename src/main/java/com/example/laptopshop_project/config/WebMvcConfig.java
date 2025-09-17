@@ -1,4 +1,4 @@
-package com.example.laptopshop_project;
+package com.example.laptopshop_project.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

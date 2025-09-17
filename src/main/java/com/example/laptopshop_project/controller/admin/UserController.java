@@ -4,20 +4,26 @@ package com.example.laptopshop_project.controller.admin;
 import com.example.laptopshop_project.domain.Users;
 import com.example.laptopshop_project.service.UploadService;
 import com.example.laptopshop_project.service.UserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 
 
 @Controller
 public class UserController {
     private final UserService userService;
     private final UploadService uploadService;
-    public UserController(UserService userService ,UploadService uploadService) {
+    private final PasswordEncoder PasswordEncoder;
+
+    public UserController(UserService userService ,UploadService uploadService, PasswordEncoder PasswordEncoder) {
         this.userService = userService;
         this.uploadService = uploadService;
+        this.PasswordEncoder=PasswordEncoder;
 
     }
 
@@ -31,6 +37,10 @@ public class UserController {
     public String getUser1(Model model, @ModelAttribute("newUser") Users user,
                            @RequestParam("TruongFile") MultipartFile file) {
         String avatar= this.uploadService.handleSaveUploadFile(file,"avatar");
+        String hashPassword= this.PasswordEncoder.encode(user.getPassword());
+        user.setAvatar(avatar);
+        user.setPassword(hashPassword);
+        user.setRole(this.userService.getRoleByName(user.getRole().getName()));
         userService.handlesave(user);
         return "redirect:/admin/user";
     }

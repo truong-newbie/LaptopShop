@@ -3,7 +3,9 @@ package com.example.laptopshop_project.service;
 
 
 
+import com.example.laptopshop_project.domain.Roles;
 import com.example.laptopshop_project.domain.Users;
+import com.example.laptopshop_project.repository.RoleRepository;
 import com.example.laptopshop_project.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +14,11 @@ import java.util.List;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
     }
 
     public Users handlesave(Users user) {
@@ -44,6 +48,10 @@ public class UserService {
 
     public void deleteUserById(long id) {
         this.userRepository.deleteById(id);
+    }
+
+    public Roles getRoleByName(String name){
+        return this.roleRepository.findByName(name);
     }
 
 }

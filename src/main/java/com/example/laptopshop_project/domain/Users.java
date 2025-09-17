@@ -26,7 +26,6 @@ public class Users {
     private String address;
     private String phone;
     private String avatar;
-    private Long roled;
 
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "role_id")
