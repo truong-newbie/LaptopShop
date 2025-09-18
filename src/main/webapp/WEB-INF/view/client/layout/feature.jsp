@@ -1,3 +1,5 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- Featurs Section Start -->
 <div class="container-fluid featurs py-5">
     <div class="container py-5">
