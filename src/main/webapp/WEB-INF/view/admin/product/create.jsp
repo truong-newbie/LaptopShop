@@ -31,10 +31,10 @@
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">
-                <h1 class="mt-4">Manage Users</h1>
+                <h1 class="mt-4">Manage Product</h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item"><a href="/admin"> Dashboard</a></li>
-                    <li class="breadcrumb-item active">Users</li>
+                    <li class="breadcrumb-item active">Product</li>
                 </ol>
                 <div class="container mt-5">
                     <div class="row">
@@ -46,27 +46,47 @@
                                        enctype="multipart/form-data">
 
                             <div class="mb-3 col-12 col-md-6">
+                                <c:set var="errorName">
+                                    <form:errors path="name" cssClass="invalid-feedback"/>
+                                </c:set>
                                 <label class="form-label"> Name:</label>
-                                <form:input type="text" class="form-control" path="name"/>
+                                <form:input type="text" class="form-control ${not empty errorName ? 'is-invalid' :''}" path="name"/>
+                                ${errorName}
                             </div>
 
                             <div class="mb-3 col-12 col-md-6">
+                                <c:set var="errorPrice">
+                                    <form:errors path="price" cssClass="invalid-feedback"/>
+                                </c:set>
                                 <label class="form-label"> Price:</label>
-                                <form:input type="text" class="form-control" path="price"/>
+                                <form:input type="number" class="form-control ${not empty errorPrice ? 'is-invalid' : ''}" path="price"/>
+                                ${errorPrice}
                             </div>
                             <div class="mb-3 col-12">
+                                <c:set var="errorDetailDesc">
+                                    <form:errors path="detailDesc" cssClass="invalid-feedback"/>
+                                </c:set>
                                 <label class="form-label">Detail description:</label>
-                                <form:textarea path="detailDesc" type="text" class="form-control"/>
+                                <form:textarea path="detailDesc" type="text" class="form-control ${not empty errorDetailDesc ? 'is-invalid' :''}"/>
+                                ${errorDetailDesc}
                             </div>
 
                             <div class="mb-3 col-12">
+                                <c:set var="errorShortDesc">
+                                    <form:errors path="shortDesc" cssClass="invalid-feedback"/>
+                                </c:set>
                                 <label class="form-label">Short Description:</label>
-                                <form:input type="text" class="form-control" path="shortDesc"/>
+                                <form:input type="text" class="form-control ${not empty errorShortDesc ?'is-invalid' :''}" path="shortDesc"/>
+                                ${errorShortDesc}
                             </div>
 
                             <div class="mb-3 col-12 col-md-6">
+                                <c:set var="errorQuantity">
+                                    <form:errors path="quantity" cssClass="invalid-feedback"/>
+                                </c:set>
                                 <label class="form-label"> Quantity:</label>
-                                <form:input type="text" class="form-control" path="quantity"/>
+                                <form:input type="number" class="form-control ${not empty errorQuantity ?'is-invalid' :''}" path="quantity"/>
+                                ${errorQuantity}
                             </div>
 
 
@@ -94,14 +114,14 @@
 
 
                             <div class="mb-3 col-12 col-md-6">
-                                <label class="form-label">Imaeg:</label>
+                                <label class="form-label">Image:</label>
                                 <input class="form-control" type="file" id="avatarFile"
                                        name="TruongFile"
                                        accept=".png , .jpg, .jpeg">
                             </div>
                         </div>
                         <div class="col-12 mb-3">
-                            <img style="max-height:250px ; display:none;" alt="avatar preview"
+                            <img style="max-height:250px ; display:none;" alt="avatar preview" align="center"
                                  id="avatarPreview"/>
                         </div>
 

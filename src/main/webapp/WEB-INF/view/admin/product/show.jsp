@@ -1,3 +1,6 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,56 +20,56 @@
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">
-                <h1 class="mt-4">Manage Products</h1>
+                <h1 class="mt-4">Manage Product</h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item"><a href="/admin"> Dashboard</a></li>
-                    <li class="breadcrumb-item active">Products</li>
+                    <li class="breadcrumb-item active">Product</li>
                 </ol>
-                <div>
-                    <h1>Table products</h1>
-                    <div class="mb-3 d-flex justify-content-end">
-                        <a href="/admin/product/create" class="btn btn-primary">Create new user</a>
+                <div class="container mt-5">
+                    <div class="d-flex justify-content-start">
+                        <h1>Table Product</h1>
                     </div>
+                    <div class="d-flex justify-content-end">
+                        <a href="/admin/product/create" class="btn btn-primary">Create new product</a>
+                    </div>
+                    <table class="table table-hover">
+                        <tr>
+                            <td>Id</td>
+                            <td>Name</td>
+                            <td>Price</td>
+                            <td>Factory</td>
+                            <td>Action</td>
+                        </tr>
+                        <c:forEach var="product" items="${products}">
+
+                            <tr>
+                                <td>${product.id}</td>
+                                <td>${product.name}</td>
+                                <td>${product.price}</td>
+                                <td>${product.factory}</td>
+                                <td>
+                                    <a href="/admin/user/${user.id}" class="btn btn-success">View</a>
+                                        <%--                    <button type="button" class="btn btn-success" > View</button>--%>
+                                    <a href="/admin/user/update/${user.id}" class="btn btn-warning">Update</a>
+                                        <%--                    <button type="button" class="btn btn-warning">Update </button>--%>
+                                        <%--                    <button type="button" class="btn btn-danger">Delete</button>--%>
+                                    <a href="/admin/user/delete/${user.id}" class="btn btn-danger">Delete</a>
+                                </td>
+                            </tr>
+
+                        </c:forEach>
+
+                    </table>
                 </div>
-                <table class="table table-bordered table-hover">
-                <thead>
-                    <td>Id</td>
-                    <td>Name</td>
-                    <td>Price</td>
-                    <td>Factory</td>
-                    <td>Action</td>
-                </thead>
-                <tbody>
-                <%--                <c:forEach var="user" items="${users}">--%>
 
-                <%--                    <tr>--%>
-                <%--                        <td>${user.id}</td>--%>
-                <%--                        <td>${user.email}</td>--%>
-                <%--                        <td>${user.fullName}</td>--%>
-                <%--                        <td>${user.role.name}</td>--%>
-                <%--                        <td>--%>
-                <%--                            <a href="/admin/user/${user.id}" class="btn btn-success">View</a>--%>
-                <%--                                &lt;%&ndash;                    <button type="button" class="btn btn-success" > View</button>&ndash;%&gt;--%>
-                <%--                            <a href="/admin/user/update/${user.id}" class="btn btn-warning">Update</a>--%>
-                <%--                                &lt;%&ndash;                    <button type="button" class="btn btn-warning">Update </button>&ndash;%&gt;--%>
-                <%--                                &lt;%&ndash;                    <button type="button" class="btn btn-danger">Delete</button>&ndash;%&gt;--%>
-                <%--                            <a href="/admin/user/delete/${user.id}" class="btn btn-danger">Delete</a>--%>
-                <%--                        </td>--%>
-                <%--                    </tr>--%>
-
-                <%--                </c:forEach>--%>
-                </tbody>
-
-            </table>
             </div>
         </main>
-
         <jsp:include page="../layout/footer.jsp"/>
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
-<script src="js/scripts.js"></script>
+<script src="/js/scripts.js"></script>
 
 </body>
 </html>

@@ -102,7 +102,7 @@
                                         id="avatarPreview"/>
                                     </div>
                                 </div >
-                                <button type="submit" class="btn btn-primary">Create</button>
+                                <button type="submit" class="btn btn-primary" align="center">Create</button>
 
                             </form:form>
                         </div>

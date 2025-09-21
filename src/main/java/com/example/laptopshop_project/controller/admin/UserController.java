@@ -40,19 +40,11 @@ public class UserController {
     public String getUser1(Model model, @ModelAttribute("newUser") @Valid Users user,
                            BindingResult newUserBindingResult,
                            @RequestParam("TruongFile") MultipartFile file) {
-
         //validate
-        List<FieldError> errors = newUserBindingResult.getFieldErrors();
-        for (FieldError error : errors ) {
-            System.out.println (">>>>"+error.getField() + " - " + error.getDefaultMessage());
-        }
-
-        if(newUserBindingResult.hasErrors()){
+        if (newUserBindingResult.hasErrors()) {
+            // Trả về form để hiển thị lỗi, tránh cho Hibernate ném ConstraintViolationException
             return "admin/user/create";
         }
-
-
-        //
         String avatar= this.uploadService.handleSaveUploadFile(file,"avatar");
         String hashPassword= this.PasswordEncoder.encode(user.getPassword());
         user.setAvatar(avatar);
