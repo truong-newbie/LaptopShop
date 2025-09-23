@@ -280,12 +280,7 @@
 </div>
 <!-- Single Product End -->
 
-
 <jsp:include page="../layout/footer.jsp" />
-
-
-
-
 
 <!-- Back to Top -->
 <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i
