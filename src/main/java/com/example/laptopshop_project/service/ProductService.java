@@ -37,8 +37,6 @@ public class ProductService {
         existingProduct.setQuantity(updateProduct.getQuantity());
         existingProduct.setFactory(updateProduct.getFactory());
         existingProduct.setTarget(updateProduct.getTarget());
-        existingProduct.setImage(updateProduct.getImage());
-
         return this.productRepository.save(existingProduct);
     }
     public void deleteProductById(long id) {

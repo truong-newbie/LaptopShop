@@ -73,10 +73,17 @@ public class ProductController {
 
     @PostMapping("/admin/product/update/{id}")
     public String updateProduct(Model model ,@PathVariable Long id,
-    @ModelAttribute("updateProduct") Products updateProduct, @RequestParam("TruongFile") MultipartFile file
+    @ModelAttribute("updateProduct") @Valid Products updateProduct,
+                                BindingResult newProductBindingResult,
+                                @RequestParam("TruongFile") MultipartFile file
     ){
-        String image= this.uploadService.handleSaveUploadFile(file,"product");
-        updateProduct.setImage(image);
+        if(newProductBindingResult.hasErrors()){
+            return "admin/product/update";
+        }
+        if(!file.isEmpty()){
+            String image= this.uploadService.handleSaveUploadFile(file,"product");
+            updateProduct.setImage(image);
+        }
         productService.updateProduct(id, updateProduct);
         return "redirect:/admin/product";
     }

@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,23 +9,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="description" content=""/>
     <meta name="author" content=""/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(() => {
+            const avatarFile = $("#avatarFile");
+            const orgImage = "${updateProduct.image}";
+                if(orgImage){
+                    const urlImage= "/images/product/" + orgImage;
+                    $("#avatarPreview").attr("src",urlImage);
+                    $("#avatarPreview").css({"display":"block"});
+                }
+            avatarFile.change(function (e) {
+                const imgURL = URL.createObjectURL(e.target.files[0]);
+                $("#avatarPreview").attr("src", imgURL);
+                $("#avatarPreview").css({"display": "block"});
+            });
+        });
+    </script>
     <title>Create User</title>
     <link href="/css/styles.css" rel="stylesheet"/>
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
-// su dung jquery to preview anh
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script>
-    $(document).ready(() => {
-        const avatarFile = $("#avatarFile");
-        avatarFile.change(function (e) {
-            const imgURL = URL.createObjectURL(e.target.files[0]);
-            $("#avatarPreview").attr("src", imgURL);
-            $("#avatarPreview").css({ "display": "block" });
-        });
-    });
-</script>
-
 <body class="sb-nav-fixed">
 <jsp:include page="../layout/header.jsp"/>
 <div id="layoutSidenav">
@@ -35,19 +39,18 @@
             <div class="container-fluid px-4">
                 <h1 class="mt-4">Manage Product</h1>
                 <ol class="breadcrumb mb-4">
-                    <li class="breadcrumb-item"><a href="/admin"> Dashboard </a></li>
-                    <li class="breadcrumb-item"><a href="/admin/product"> Product </a></li>
-                    <li class="breadcrumb-item active"> Update</li>
+                    <li class="breadcrumb-item"><a href="/admin"> Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="/admin/product"> Product</a></li>
+                    <li class="breadcrumb-item active">Update</li>
                 </ol>
-                <div class = "container mt-5">
-                    <div class ="row">
+                <div class="container mt-5">
+                    <div class="row">
                         <div class="col-md-6 col-12 mx-auto">
-                            <h3> Update Product</h3>
+                            <h3> Update product</h3>
                             <hr/>
                             <form:form method="post" action="/admin/product/update/${updateProduct.id}" modelAttribute="updateProduct"
                                        class="row"
                                        enctype="multipart/form-data">
-
                             <div class="mb-3 col-12 col-md-6">
                                 <c:set var="errorName">
                                     <form:errors path="name" cssClass="invalid-feedback"/>
@@ -70,7 +73,7 @@
                                     <form:errors path="detailDesc" cssClass="invalid-feedback"/>
                                 </c:set>
                                 <label class="form-label">Detail description:</label>
-                                <form:textarea path="detailDesc" class="form-control ${not empty errorDetailDesc ? 'is-invalid' :''}"></form:textarea>
+                                <form:textarea path="detailDesc" type="text" class="form-control ${not empty errorDetailDesc ? 'is-invalid' :''}"/>
                                     ${errorDetailDesc}
                             </div>
 
@@ -114,7 +117,6 @@
                                     <form:option value="DOANH-NHAN">Doanh nhân</form:option>
                                 </form:select>
                             </div>
-
                             <div class="mb-3 col-12 col-md-6">
                                 <label class="form-label">Image:</label>
                                 <input class="form-control" type="file" id="avatarFile"
@@ -122,18 +124,16 @@
                                        accept=".png , .jpg, .jpeg">
                             </div>
                         </div>
-                        <div class="col-12 mb-3 text-center">
-                            <img id="avatarPreview" alt="avatar preview"
-                                 class="d-block mx-auto"
-                                 style="max-height:250px; display:none;"/>
+                        <div class="col-12 mb-3" align="center">
+                            <img style="max-height:250px ; display:none;" alt="avatar preview"
+                                 id="avatarPreview"/>
                         </div>
-
 
                         <div class="mb-3" align="center">
-                            <button type="submit" class="btn btn-primary ">Update</button>
+                            <button type="submit" class="btn btn-primary ">Create</button>
                         </div>
+
                         </form:form>
-                        </div>
                     </div>
                 </div>
             </div>
