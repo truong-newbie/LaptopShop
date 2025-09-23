@@ -9,10 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -57,4 +54,44 @@ public class ProductController {
         this.productService.hanleSave(product);
         return "redirect:/admin/product";
     }
+
+    //xem chi tiet san pham
+    @GetMapping("/admin/product/{id}")
+    public String getDetailProduct(Model model , @PathVariable Long id){
+            Products product= this.productService.getProductById(id).get();
+            model.addAttribute("product", product);
+            return "admin/product/detail";
+    }
+
+    //update product
+    @GetMapping("/admin/product/update/{id}")
+    public String getUpdateProduct(Model model, @PathVariable Long id) {
+        Products product= this.productService.getProductById(id).get();
+        model.addAttribute("updateProduct", product);
+        return "admin/product/update";
+    }
+
+    @PostMapping("/admin/product/update/{id}")
+    public String updateProduct(Model model ,@PathVariable Long id,
+    @ModelAttribute("updateProduct") Products updateProduct, @RequestParam("TruongFile") MultipartFile file
+    ){
+        String image= this.uploadService.handleSaveUploadFile(file,"product");
+        updateProduct.setImage(image);
+        productService.updateProduct(id, updateProduct);
+        return "redirect:/admin/product";
+    }
+    //delete
+    @GetMapping("/admin/product/delete/{id}")
+    public String getDeleteProduct(Model model, @PathVariable long id){
+        Products product= productService.getProductById(id).get();
+        model.addAttribute("deleteProduct", product);
+        return "admin/product/delete";
+    }
+
+    @PostMapping("/admin/product/delete/{id}")
+    public String deleteProduct(Model model, @PathVariable long id){
+        this.productService.deleteProductById(id);
+        return "redirect:/admin/product";
+    }
+
 }

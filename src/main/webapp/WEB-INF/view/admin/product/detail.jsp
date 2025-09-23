@@ -20,29 +20,25 @@
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">
-                <h1 class="mt-4">Manage Users</h1>
+                <h1 class="mt-4">Manage Products</h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item"><a href="/admin"> Dashboard</a></li>
-                    <li class="breadcrumb-item active">Users</li>
+                    <li class="breadcrumb-item"><a href="/admin/product"> Product</a></li>
+                    <li class="breadcrumb-item active">View</li>
                 </ol>
-
-                <div class = "container mt-5">
-                    <div class ="row">
-                        <div class="col-md-6 col-12 mx-auto">'
-                            <h3> Delete User</h3>
-                            <hr/>
-                            <form:form method="post" action="/admin/user/delete" modelAttribute="newUser">
-                                <!-- hidden input để truyền id -->
-                                <form:hidden path="id"/>
-
-                                <div class="alert alert-danger" role="alert">
-                                    Are you sure you want to delete user: <strong>${newUser.fullName}</strong>?
-                                </div>
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                                <a href="/admin/user" class="btn btn-secondary">Cancel</a>
-                            </form:form>
-                        </div>
-                    </div>
+                <div class = "container mt-5" >
+                        <h1>Product Detail with ${product.id}</h1>
+                        <hr>
+                    <img src="<c:url value='/images/product/${product.image}' />"
+                         alt="Chưa có ảnh minh họa"
+                         style="width:400px; height:300px;" />
+                    <h3>Product Information</h3>
+                        <ul>
+                            <li>ID: ${product.id}</li>
+                            <li>Name : ${product.name}</li>
+                            <li>Price : ${product.price}</li>
+                        </ul>
+                        <a class="btn btn-primary" href="/admin/product" role="button">Back</a>
                 </div>
             </div>
         </main>

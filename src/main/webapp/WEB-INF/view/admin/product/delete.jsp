@@ -23,25 +23,28 @@
                 <h1 class="mt-4">Manage Users</h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item"><a href="/admin"> Dashboard</a></li>
-                    <li class="breadcrumb-item active">Users</li>
+                    <li class="breadcrumb-item"><a href="/admin/product"> Product</a></li>
+                    <li class="breadcrumb-item active">Delete</li>
                 </ol>
 
                 <div class = "container mt-5">
                     <div class ="row">
                         <div class="col-md-6 col-12 mx-auto">'
-                            <h3> Delete User</h3>
+                            <h3> Delete Product</h3>
                             <hr/>
-                            <form:form method="post" action="/admin/user/delete" modelAttribute="newUser">
+                            <form:form method="post" action="/admin/product/delete/${deleteProduct.id}" modelAttribute="deleteProduct">
                                 <!-- hidden input để truyền id -->
                                 <form:hidden path="id"/>
 
                                 <div class="alert alert-danger" role="alert">
-                                    Are you sure you want to delete user: <strong>${newUser.fullName}</strong>?
+                                    Are you sure you want to delete product: <strong>${deleteProduct.name}</strong>?
                                 </div>
+
                                 <button type="submit" class="btn btn-danger">Delete</button>
-                                <a href="/admin/user" class="btn btn-secondary">Cancel</a>
+                                <a href="/admin/product" class="btn btn-secondary">Cancel</a>
                             </form:form>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -52,6 +55,5 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
 <script src="/js/scripts.js"></script>
-
 </body>
 </html>

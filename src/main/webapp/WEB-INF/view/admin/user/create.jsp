@@ -38,7 +38,7 @@
                 </ol>
                 <div class="container mt-5">
                     <div class="row">
-                        <div class="col-md-6 col-12 mx-auto">'
+                        <div class="col-md-6 col-12 mx-auto">
                             <h3> Create User</h3>
                             <hr/>
                             <form:form method="post" action="/admin/user/create" modelAttribute="newUser"
@@ -97,13 +97,14 @@
                                             accept=".png , .jpg, .jpeg">
                                         </div>
                                     </div>
-                                    <div class="col-12 mb-3">
+                                    <div class="col-12 mb-3" align="center">
                                         <img style="max-height:250px ; display:none;" alt="avatar preview"
                                         id="avatarPreview"/>
                                     </div>
                                 </div >
-                                <button type="submit" class="btn btn-primary" align="center">Create</button>
-
+                                <div   class="mb-3"  align="center">
+                                    <button type="submit" class="btn btn-primary" >Create</button>
+                                </div>
                             </form:form>
                         </div>
                     </div>

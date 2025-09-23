@@ -49,10 +49,7 @@
                                 <td>${user.role.name}</td>
                                 <td>
                                     <a href="/admin/user/${user.id}" class="btn btn-success">View</a>
-                                        <%--                    <button type="button" class="btn btn-success" > View</button>--%>
                                     <a href="/admin/user/update/${user.id}" class="btn btn-warning">Update</a>
-                                        <%--                    <button type="button" class="btn btn-warning">Update </button>--%>
-                                        <%--                    <button type="button" class="btn btn-danger">Delete</button>--%>
                                     <a href="/admin/user/delete/${user.id}" class="btn btn-danger">Delete</a>
                                 </td>
                             </tr>
