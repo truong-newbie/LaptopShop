@@ -31,6 +31,7 @@ public class Products {
     private double price;
     private String image;
     @NotBlank(message = "DetailDesc không được để trống")
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String detailDesc;
     @NotBlank(message = "ShortDesc không được để trống")
     private String shortDesc;
