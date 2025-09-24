@@ -23,4 +23,9 @@ public class HomePageController {
         model.addAttribute("products", products);
         return "client/homepage/show";
     }
+
+    @GetMapping("/register")
+    public String getRegister(){
+        return "client/auth/register";
+    }
 }
