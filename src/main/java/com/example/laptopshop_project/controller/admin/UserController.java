@@ -98,6 +98,5 @@ public class UserController {
     public String deleteUser1(@ModelAttribute("newUser") Users deleteUser) {
         userService.deleteUserById(deleteUser.getId());
         return "redirect:/admin/user";
-
     }
 }
