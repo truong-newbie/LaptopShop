@@ -23,7 +23,7 @@ public class Users {
     private long id;
 
     @NotNull
-    @Size(min=2, message=" Password phải có tối thiểu 2 ký tự")
+    @Size(min=3, message=" Password phải có tối thiểu 3 ký tự")
     private String password;
 
     @NotNull
