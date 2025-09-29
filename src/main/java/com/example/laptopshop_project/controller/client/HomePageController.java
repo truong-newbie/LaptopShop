@@ -47,14 +47,8 @@ public class HomePageController {
     BindingResult bindingResult){
 
         //validate
-//        if(bindingResult.hasErrors()){
-//            return "client/auth/register";
-//        }
-
-        List<FieldError> errors = bindingResult.getFieldErrors();
-        for(FieldError error : errors){
-            System.out.println("1");
-            System.out.println(">>>>"+ error.getField()+" "+error.getDefaultMessage());
+        if(bindingResult.hasErrors()){
+            return "client/auth/register";
         }
 
         Users user= userService.RegisterDTOtoUser(registerDTO);
@@ -65,7 +59,7 @@ public class HomePageController {
         return "redirect:/login";
     }
 
-    @GetMapping("/login.html")  //fix =)))
+    @GetMapping("/login")
     public String getLoginPage(Model model){
         return "client/auth/login";
     }
