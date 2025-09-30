@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 @EnableMethodSecurity(securedEnabled = true)
@@ -26,6 +27,11 @@ public class SecurityConfiguration {
     @Bean
     public UserDetailsService userDetailsService(UserService userService) {
         return new CustomUserDetailsService(userService);
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler customSuccessHandler() {
+        return new CustomSuccessHandler();
     }
 
     @Bean
@@ -45,11 +51,13 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .dispatcherTypeMatchers(DispatcherType.FORWARD,
                                 DispatcherType.INCLUDE).permitAll()
-                        .requestMatchers("/", "/login", "/client/**", "/css/**", "/js/**",
+                        .requestMatchers("/", "/login", "/product/**", "/client/**", "/css/**", "/js/**",
                                 "/images/**").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
+                        .successHandler(customSuccessHandler())
                         .failureUrl("/login?error")
                         .permitAll());
         return http.build();
