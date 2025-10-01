@@ -1,9 +1,12 @@
 package com.example.laptopshop_project.config;
 
+import com.example.laptopshop_project.domain.Users;
+import com.example.laptopshop_project.service.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.DefaultRedirectStrategy;
@@ -17,6 +20,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CustomSuccessHandler implements AuthenticationSuccessHandler {
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+    @Autowired
+    private UserService userService;
+
     protected String determineTargetUrl(final Authentication authentication) {
 
         Map<String, String> roleTargetUrlMap = new HashMap<>();
@@ -34,12 +41,22 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
         throw new IllegalStateException();
     }
 
-    protected void clearAuthenticationAttributes(HttpServletRequest request) {
+    protected void clearAuthenticationAttributes(HttpServletRequest request, Authentication authentication) {
         HttpSession session = request.getSession(false);
         if (session == null) {
             return;
         }
         session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
+        //get email
+        String email = authentication.getName();
+        //query user
+        Users user = this.userService.getUserByEmail(email);
+
+        if (user != null) {
+            session.setAttribute("fullName", user.getFullName());
+            session.setAttribute("avatar", user.getAvatar());
+
+        }
     }
 
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
@@ -53,7 +70,7 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
             return;
         }
         redirectStrategy.sendRedirect(request, response, targetUrl);
-        clearAuthenticationAttributes(request);
+        clearAuthenticationAttributes(request, authentication);
 
     }
 }

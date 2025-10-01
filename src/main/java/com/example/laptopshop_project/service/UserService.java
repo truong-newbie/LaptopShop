@@ -1,8 +1,6 @@
 package com.example.laptopshop_project.service;
 
 
-
-
 import com.example.laptopshop_project.domain.Roles;
 import com.example.laptopshop_project.domain.Users;
 import com.example.laptopshop_project.domain.dto.RegisterDTO;
@@ -23,14 +21,14 @@ public class UserService {
     }
 
     public Users handlesave(Users user) {
-        return this.userRepository.save( user);
+        return this.userRepository.save(user);
     }
 
     public List<Users> getAllUsers() {
         return this.userRepository.findAll();
     }
 
-    public Users updateUser(long id,Users updatedUser) {
+    public Users updateUser(long id, Users updatedUser) {
         Users existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -52,22 +50,24 @@ public class UserService {
         this.userRepository.deleteById(id);
     }
 
-    public Roles getRoleByName(String name){
+    public Roles getRoleByName(String name) {
         return this.roleRepository.findByName(name);
     }
 
-    public Users RegisterDTOtoUser(RegisterDTO registerDTO){
-        Users user=new Users();
+    public Users RegisterDTOtoUser(RegisterDTO registerDTO) {
+        Users user = new Users();
 
-        user.setFullName(registerDTO.getFirstName()+" "+registerDTO.getLastName());
+        user.setFullName(registerDTO.getFirstName() + " " + registerDTO.getLastName());
         user.setEmail(registerDTO.getEmail());
         user.setPassword(registerDTO.getPassword());
         return user;
     }
-    public boolean checkEmailExist(String email){
+
+    public boolean checkEmailExist(String email) {
         return this.userRepository.existsByEmail(email);
     }
-    public Users getUserByEmail(String email){
+
+    public Users getUserByEmail(String email) {
         return this.userRepository.findByEmail(email);
     }
 
