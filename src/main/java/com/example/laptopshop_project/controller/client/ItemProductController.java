@@ -36,5 +36,10 @@ public class ItemProductController {
         return "redirect:/";
     }
 
+    @GetMapping("/cart")
+    public String getCardPage(Model model) {
+        return "client/cart/show";
+    }
+
 
 }
