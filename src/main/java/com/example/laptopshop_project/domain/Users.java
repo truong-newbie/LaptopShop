@@ -1,7 +1,9 @@
 package com.example.laptopshop_project.domain;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,15 +17,15 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class Users {
 
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @NotNull
-    @Size(min=3, message=" Password phải có tối thiểu 3 ký tự")
+    @Size(min = 3, message = " Password phải có tối thiểu 3 ký tự")
     private String password;
 
     @NotNull
@@ -31,7 +33,7 @@ public class Users {
     private String email;
 
     @NotNull
-    @Size(min=3, message = "Tên phải có tối thiểu 3 ký tự")
+    @Size(min = 3, message = "Tên phải có tối thiểu 3 ký tự")
     private String fullName;
     private String address;
     private String phone;
@@ -41,9 +43,10 @@ public class Users {
     @JoinColumn(name = "role_id")
     private Roles role;
 
-    @OneToMany( mappedBy = "user")
+    @OneToMany(mappedBy = "user")
     List<Orders> orders;
 
-
+    @OneToOne(mappedBy = "user")
+    private Cart cart;
 
 }
