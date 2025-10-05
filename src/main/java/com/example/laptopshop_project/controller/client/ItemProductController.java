@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -49,17 +50,13 @@ public class ItemProductController {
         user.setId(id);
 
         Cart cart = this.productService.fetchByUser(user);
-
-        List<CartDetail> cartDetailList = cart.getCartDetail();
-
+        List<CartDetail> cartDetailList = cart == null ? new ArrayList<CartDetail>() : cart.getCartDetail();
         double totalPrice = 0;
         for (CartDetail cartDetail : cartDetailList) {
             totalPrice += cartDetail.getPrice();
         }
-
         model.addAttribute("cartDetails", cartDetailList);
         model.addAttribute("totalPrice", totalPrice);
-
         return "client/cart/show";
     }
 

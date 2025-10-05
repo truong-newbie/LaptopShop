@@ -26,17 +26,17 @@
             } else {
                 $('.fixed-top').removeClass('shadow').css('top', 0);
             }
-        } 
+        }
     });
-    
-    
-   // Back to top button
-   $(window).scroll(function () {
-    if ($(this).scrollTop() > 300) {
-        $('.back-to-top').fadeIn('slow');
-    } else {
-        $('.back-to-top').fadeOut('slow');
-    }
+
+
+    // Back to top button
+    $(window).scroll(function () {
+        if ($(this).scrollTop() > 300) {
+            $('.back-to-top').fadeIn('slow');
+        } else {
+            $('.back-to-top').fadeOut('slow');
+        }
     });
     $('.back-to-top').click(function () {
         $('html, body').animate({scrollTop: 0}, 1500, 'easeInOutExpo');
@@ -52,27 +52,27 @@
         dots: true,
         loop: true,
         margin: 25,
-        nav : true,
-        navText : [
+        nav: true,
+        navText: [
             '<i class="bi bi-arrow-left"></i>',
             '<i class="bi bi-arrow-right"></i>'
         ],
         responsiveClass: true,
         responsive: {
-            0:{
-                items:1
+            0: {
+                items: 1
             },
-            576:{
-                items:1
+            576: {
+                items: 1
             },
-            768:{
-                items:1
+            768: {
+                items: 1
             },
-            992:{
-                items:2
+            992: {
+                items: 2
             },
-            1200:{
-                items:2
+            1200: {
+                items: 2
             }
         }
     });
@@ -86,27 +86,27 @@
         dots: true,
         loop: true,
         margin: 25,
-        nav : true,
-        navText : [
+        nav: true,
+        navText: [
             '<i class="bi bi-arrow-left"></i>',
             '<i class="bi bi-arrow-right"></i>'
         ],
         responsiveClass: true,
         responsive: {
-            0:{
-                items:1
+            0: {
+                items: 1
             },
-            576:{
-                items:1
+            576: {
+                items: 1
             },
-            768:{
-                items:2
+            768: {
+                items: 2
             },
-            992:{
-                items:3
+            992: {
+                items: 3
             },
-            1200:{
-                items:4
+            1200: {
+                items: 4
             }
         }
     });
@@ -129,23 +129,46 @@
         })
     });
 
-
-
-    // Product Quantity
     $('.quantity button').on('click', function () {
         var button = $(this);
-        var oldValue = button.parent().parent().find('input').val();
-        if (button.hasClass('btn-plus')) {
-            var newVal = parseFloat(oldValue) + 1;
-        } else {
-            if (oldValue > 0) {
-                var newVal = parseFloat(oldValue) - 1;
-            } else {
-                newVal = 0;
-            }
+        var input = button.parent().parent().find('input');
+        var oldValue = parseFloat(input.val());
+        var newVal = button.hasClass('btn-plus') ? oldValue + 1 : Math.max(1, oldValue - 1);
+        input.val(newVal);
+
+        const price = +input.attr("data-cart-detail-price");
+        const id = input.attr("data-cart-detail-id");
+
+        // Cập nhật thành tiền cho sản phẩm
+        const priceElement = $(`p[data-cart-detail-id='${id}']`);
+        if (priceElement.length) {
+            const newPrice = price * newVal;
+            priceElement.text(formatCurrency(newPrice.toFixed(2)) + "đ");
         }
-        button.parent().parent().find('input').val(newVal);
+
+        // Cập nhật tổng giỏ hàng
+        let total = 0;
+        $("input[data-cart-detail-price]").each(function () {
+            const p = +$(this).attr("data-cart-detail-price");
+            const q = +$(this).val();
+            total += p * q;
+        });
+
+        $("p[data-cart-total-price]").each(function () {
+            $(this).text(formatCurrency(total.toFixed(2)) + "đ");
+            $(this).attr("data-cart-total-price", total);
+        });
     });
+
+    function formatCurrency(value) {
+        const formatter = new Intl.NumberFormat('vi-VN', {
+            style: 'decimal',
+            minimumFractionDigits: 0,
+        });
+        let formatted = formatter.format(value);
+        formatted = formatted.replace(/\./g, ',');
+        return formatted;
+    }
 
 })(jQuery);
 
