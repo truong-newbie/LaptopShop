@@ -11,4 +11,7 @@ public interface CartDetailRepository extends JpaRepository<CartDetail, Long> {
     boolean existsByCartAndProducts(Cart cart, Products products);
 
     CartDetail findByCartAndProducts(Cart cart, Products products);
+
+    Long cart(Cart cart);
+
 }

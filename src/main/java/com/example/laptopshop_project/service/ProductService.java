@@ -8,6 +8,7 @@ import com.example.laptopshop_project.repository.CartDetailRepository;
 import com.example.laptopshop_project.repository.CartRepository;
 import com.example.laptopshop_project.repository.ProductRepository;
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -105,4 +106,29 @@ public class ProductService {
     public Cart fetchByUser(Users user) {
         return this.cartRepository.findByUser(user);
     }
+
+    @Transactional
+    public void handleRemoveCartDetail(long cartDetailId, HttpSession session) {
+        Optional<CartDetail> cartDetailOptional = this.cartDetailRepository.findById(cartDetailId);
+        if (cartDetailOptional.isPresent()) {
+            CartDetail cartDetail = cartDetailOptional.get();
+            Cart currentCart = cartDetail.getCart();
+            //delete cart-detail
+            this.cartDetailRepository.deleteById(cartDetailId);
+
+            //update cart
+            if (currentCart.getSum() > 1) {
+                //update current cart
+                int s = currentCart.getSum() - 1;
+                currentCart.setSum(s);
+                session.setAttribute("sum", s);
+                this.cartRepository.save(currentCart);
+            } else {
+                //delete cart(sum =1)
+                this.cartRepository.deleteById(currentCart.getId());
+                session.setAttribute("sum", 0);
+            }
+        }
+    }
+
 }
