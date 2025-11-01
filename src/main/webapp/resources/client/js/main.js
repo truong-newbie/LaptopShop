@@ -160,6 +160,11 @@
         });
     });
 
+    //set form index
+    const index = input.attr("data-cart-detail-index")
+    const el = document.getElementById(`cartDetails${index}.quantity`);
+    $(el).val(newVal);
+
     function formatCurrency(value) {
         const formatter = new Intl.NumberFormat('vi-VN', {
             style: 'decimal',

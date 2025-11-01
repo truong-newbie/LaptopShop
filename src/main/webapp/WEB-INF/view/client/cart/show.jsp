@@ -101,7 +101,8 @@
                                 <input type="text" class="form-control form-control-sm text-center border-0"
                                        value="${cartDetails.quantity}"
                                        data-cart-detail-id="${cartDetails.id}"
-                                       data-cart-detail-price="${cartDetails.price}">
+                                       data-cart-detail-price="${cartDetails.price}"
+                                       data-cart-detail-index="${status.index}">
                                 <div class="input-group-btn">
                                     <button class="btn btn-sm btn-plus rounded-circle bg-light border">
                                         <i class="fa fa-plus"></i>
@@ -154,6 +155,29 @@
                         <fmt:formatNumber type="number" value="${totalPrice}"/> đ
                     </p>
                 </div>
+                <form:form action="/confirm-chechout" method="post" modelAttribute="cart">
+                    <input type="hidden" name="${_csrf.parameterName}"
+                           value="${_csrf.token}"/>
+                    <div style="display:none;">
+                        <c:forEach var="cartDetail" items="${cart.cartDetails}"
+                                   varStatus="status">
+                            <div class="mb-3">
+                                <div class="form-group">
+                                    <label>Id:</label>
+                                    <form:input class="form-control"
+                                                value="${cartDetails.id}"
+                                                path="cartDetails[${status.index}].id"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>Quantity:</label>
+                                    <form:input class="form-control"
+                                                value="${cartDetails.quantity}"
+                                                path="cartDetails[${status.index}].quantity"/>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </div>
+                </form:form>
                 <button class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4"
                         type="button">Xác nhận đơn hàng
                 </button>

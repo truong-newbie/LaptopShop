@@ -65,6 +65,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/", "/login", "/product/**", "/client/**", "/css/**", "/js/**",
                                 "/images/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
+
                         .anyRequest().authenticated())
                 .sessionManagement((sessionManagement) -> sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)

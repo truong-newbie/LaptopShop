@@ -10,23 +10,28 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
-@Table(name="orders")
+@Table(name = "orders")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Orders{
+public class Orders {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private double totalPrice;
 
+    private String receiverPhone;
+    private String receiverName;
+    private String receiverAddress;
+    private String status;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Users user;
 
-    @OneToMany( mappedBy = "orders")
+    @OneToMany(mappedBy = "orders")
     private List<OrderDetail> orderDetails;
 
 }

@@ -31,5 +31,5 @@ public class Cart {
 
     //cart_detail_id
     @OneToMany(mappedBy = "cart")
-    private List<CartDetail> cartDetail;
+    private List<CartDetail> cartDetails;
 }
