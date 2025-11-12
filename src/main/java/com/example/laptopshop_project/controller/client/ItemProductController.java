@@ -8,6 +8,7 @@ import com.example.laptopshop_project.domain.Users;
 import com.example.laptopshop_project.service.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -48,36 +49,14 @@ public class ItemProductController {
         user.setId(id);
 
         Cart cart = this.productService.fetchByUser(user);
-        List<CartDetail> cartDetailList = cart == null ? new ArrayList<CartDetail>() : cart.getCartDetails();
-        double totalPrice = 0;
-        for (CartDetail cartDetail : cartDetailList) {
-            totalPrice += cartDetail.getPrice();
-        }
-        model.addAttribute("cartDetails", cartDetailList);
-        model.addAttribute("totalPrice", totalPrice);
-        model.addAttribute("cart", cart);
-        return "client/cart/show";
-    }
-
-    @GetMapping("/checkout")
-    public String getCheckoutPage(Model model, HttpServletRequest request) {
-        Users currentUser = new Users();  //null
-        HttpSession session = request.getSession();
-        long id = (long) session.getAttribute("id");
-        currentUser.setId(id);
-
-        Cart cart = this.productService.fetchByUser(currentUser);
-
-        List<CartDetail> cartDetails = cart == null ? new ArrayList<CartDetail>() : cart.getCartDetails();
-
+        List<CartDetail> cartDetails = cart == null ? new ArrayList<>() : cart.getCartDetails();
         double totalPrice = 0;
         for (CartDetail cartDetail : cartDetails) {
-            totalPrice += cartDetail.getPrice() * cartDetail.getQuantity();
+            totalPrice += cartDetail.getPrice();
         }
         model.addAttribute("cartDetails", cartDetails);
         model.addAttribute("totalPrice", totalPrice);
-
-        return "client/cart/checkout";
+        return "client/cart/show";
     }
 
     @PostMapping("/delete-cart-product/{id}")
@@ -88,13 +67,16 @@ public class ItemProductController {
         return "redirect:/cart";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/confirm-chechout")
     public String getCheckOutPage(@ModelAttribute("cart") Cart cart) {
-        List<CartDetail> cartDetails = cart == null ? new ArrayList<CartDetail>() : cart.getCartDetails();
+        List<CartDetail> cartDetails = cart == null ? new ArrayList<>() : cart.getCartDetails();
         this.productService.handleUpdateCartBeforeCheckout(cartDetails);
         return "redirect:/checkout";
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/place-order")
     public String handlePlaceOrder(
             HttpServletRequest request,
             @RequestParam("receiverName") String receiverName,
@@ -102,5 +84,24 @@ public class ItemProductController {
             @RequestParam("receiverPhone") String receiverPhone) {
         HttpSession session = request.getSession(false);
         return "redirect:/";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/checkout")
+    public String GetCheckout(Model model, HttpServletRequest req) {
+        Users user = new Users();
+        HttpSession session = req.getSession(false);
+        long id = (long) session.getAttribute("id");
+        user.setId(id);
+
+        Cart cart = this.productService.fetchByUser(user);
+        List<CartDetail> cartDetails = cart == null ? new ArrayList<>() : cart.getCartDetails();
+        double totalPrice = 0;
+        for (CartDetail cartDetail : cartDetails) {
+            totalPrice += cartDetail.getPrice();
+        }
+        model.addAttribute("cartDetails", cartDetails);
+        model.addAttribute("totalPrice", totalPrice);
+        return "client/cart/checkout";
     }
 }

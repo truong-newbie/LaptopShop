@@ -178,9 +178,11 @@
                         </c:forEach>
                     </div>
                 </form:form>
-                <button class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4"
-                        type="button">Xác nhận đơn hàng
-                </button>
+                <a href="${pageContext.request.contextPath}/checkout"
+                   class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4">
+                    Xác nhận đơn hàng
+                </a>
+
             </div>
         </div>
     </div>

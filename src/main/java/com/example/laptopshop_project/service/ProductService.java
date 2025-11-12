@@ -131,12 +131,14 @@ public class ProductService {
         }
     }
 
+    @Transactional
     public void handleUpdateCartBeforeCheckout(List<CartDetail> cartDetails) {
         for (CartDetail cartDetail : cartDetails) {
             Optional<CartDetail> cdOptional = this.cartDetailRepository.findById(cartDetail.getId());
             if (cdOptional.isPresent()) {
                 CartDetail currentCartDetail = cdOptional.get();
-                currentCartDetail.setQuantity(cartDetail.getQuantity());
+//                currentCartDetail.setQuantity(cartDetail.getQuantity());
+                currentCartDetail.setQuantity(999);
                 this.cartDetailRepository.save(currentCartDetail);
             }
         }
