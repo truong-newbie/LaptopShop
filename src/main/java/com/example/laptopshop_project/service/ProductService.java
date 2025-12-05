@@ -4,6 +4,8 @@ import com.example.laptopshop_project.domain.*;
 import com.example.laptopshop_project.repository.*;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,8 +36,8 @@ public class ProductService {
         return this.productRepository.save(products);
     }
 
-    public List<Products> getAllProducts() {
-        return this.productRepository.findAll();
+    public Page<Products> getAllProducts(Pageable page) {
+        return this.productRepository.findAll(page);
     }
 
     public Optional<Products> getProductById(long id) {
