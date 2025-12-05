@@ -1,11 +1,15 @@
 package com.example.laptopshop_project.controller.client;
 
 
+import com.example.laptopshop_project.domain.Orders;
 import com.example.laptopshop_project.domain.Products;
 import com.example.laptopshop_project.domain.Users;
 import com.example.laptopshop_project.domain.dto.RegisterDTO;
+import com.example.laptopshop_project.service.OrderService;
 import com.example.laptopshop_project.service.ProductService;
 import com.example.laptopshop_project.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -23,11 +27,14 @@ public class HomePageController {
     private final ProductService productService;
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
+    private final OrderService orderService;
 
-    public HomePageController(ProductService productService, UserService userService, PasswordEncoder passwordEncoder) {
+    public HomePageController(ProductService productService, UserService userService
+            , PasswordEncoder passwordEncoder, OrderService orderService) {
         this.productService = productService;
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
+        this.orderService = orderService;
     }
 
     @GetMapping
@@ -71,4 +78,16 @@ public class HomePageController {
         return "client/auth/deny";
     }
 
+    @GetMapping("/order-history")
+    public String getOrderHistoryPage(Model model, HttpServletRequest request) {
+        Users currentUser = new Users();
+        HttpSession session = request.getSession(false);
+        long id = (long) session.getAttribute("id");
+        currentUser.setId(id);
+
+        List<Orders> orders = this.orderService.fetchOrderByUser(currentUser);
+        model.addAttribute("orders", orders);
+
+        return "client/cart/order-history";
+    }
 }

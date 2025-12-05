@@ -2,6 +2,7 @@ package com.example.laptopshop_project.service;
 
 import com.example.laptopshop_project.domain.OrderDetail;
 import com.example.laptopshop_project.domain.Orders;
+import com.example.laptopshop_project.domain.Users;
 import com.example.laptopshop_project.repository.OrderDetailRepository;
 import com.example.laptopshop_project.repository.OrderRepository;
 import org.springframework.stereotype.Service;
@@ -47,5 +48,10 @@ public class OrderService {
             currentOrder.setStatus(order.getStatus());
             this.orderRepository.save(currentOrder);
         }
+    }
+
+
+    public List<Orders> fetchOrderByUser(Users user) {
+        return this.orderRepository.findByUser(user);
     }
 }

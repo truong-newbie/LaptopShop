@@ -20,7 +20,7 @@
             rel="stylesheet">
 
     <!-- Icon Font Stylesheet -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
@@ -44,7 +44,7 @@
 </div>
 <!-- Spinner End -->
 
-<jsp:include page="../layout/header.jsp" />
+<jsp:include page="../layout/header.jsp"/>
 
 <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
@@ -55,7 +55,8 @@
             </div>
             <div class="modal-body d-flex align-items-center">
                 <div class="input-group w-75 mx-auto d-flex">
-                    <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
+                    <input type="search" class="form-control p-3" placeholder="keywords"
+                           aria-describedby="search-icon-1">
                     <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
                 </div>
             </div>
@@ -71,7 +72,7 @@
             <div>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"> <a href="/">Home</a> </li>
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Chi tiết sản phẩm</li>
                     </ol>
                 </nav>
@@ -107,22 +108,34 @@
                                     <i class="fa fa-minus"></i>
                                 </button>
                             </div>
-                            <input type="text" class="form-control form-control-sm text-center border-0" value="1">
+                            <input type="text"
+                                   class="form-control form-control-sm text-center border-0" value="1"
+                                   data-cart-detail-index=="0">
                             <div class="input-group-btn">
                                 <button class="btn btn-sm btn-plus rounded-circle bg-light border">
                                     <i class="fa fa-plus"></i>
                                 </button>
                             </div>
                         </div>
-                        <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i
-                                class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                        <form action="/add-product-from-view-detail" method="post" modelAttribute="product">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            <input class="form-control d-none" type="text" value="${product.id}"
+                                   name="id"/>
+                            <input class="form-control d-none" type="text" name="quantity" id="cartDetails0.quantity"
+                                   value="1"/>
+                            <button class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i
+                                    class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart
+                            </button>
+                        </form>
+
                     </div>
                     <div class="col-lg-12">
                         <nav>
                             <div class="nav nav-tabs mb-3">
                                 <button class="nav-link active border-white border-bottom-0" type="button"
                                         role="tab" id="nav-about-tab" data-bs-toggle="tab" data-bs-target="#nav-about"
-                                        aria-controls="nav-about" aria-selected="true">Description</button>
+                                        aria-controls="nav-about" aria-selected="true">Description
+                                </button>
                             </div>
                         </nav>
                         <div class="tab-content mb-5">
@@ -184,7 +197,7 @@
 </div>
 <!-- Single Product End -->
 
-<jsp:include page="../layout/footer.jsp" />
+<jsp:include page="../layout/footer.jsp"/>
 
 <!-- Back to Top -->
 <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i
@@ -198,6 +211,30 @@
 <script src="/client/lib/waypoints/waypoints.min.js"></script>
 <script src="/client/lib/lightbox/js/lightbox.min.js"></script>
 <script src="/client/lib/owlcarousel/owl.carousel.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // 1. Khi bấm nút Cộng
+        $('.btn-plus').on('click', function () {
+            // Lấy giá trị hiện tại ở ô hiển thị
+            var now = $(".quantity input").val();
+            if ($.isNumeric(now)) {
+                // Cập nhật vào thẻ input ẩn trong form (dùng id có escape dấu chấm)
+                $("#cartDetails0\\.quantity").val(parseInt(now) + 1);
+            }
+        });
+
+        // 2. Khi bấm nút Trừ
+        $('.btn-minus').on('click', function () {
+            var now = $(".quantity input").val();
+            if ($.isNumeric(now)) {
+                var next = parseInt(now) - 1;
+                if (next < 1) next = 1; // Không cho phép nhỏ hơn 1
+                // Cập nhật vào thẻ input ẩn
+                $("#cartDetails0\\.quantity").val(next);
+            }
+        });
+    });
+</script>
 
 <!-- Template Javascript -->
 <script src="/client/js/main.js"></script>

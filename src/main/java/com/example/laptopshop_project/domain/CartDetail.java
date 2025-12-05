@@ -13,7 +13,7 @@ public class CartDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private int quantity;
+    private long quantity;
 
     private double price;
 
