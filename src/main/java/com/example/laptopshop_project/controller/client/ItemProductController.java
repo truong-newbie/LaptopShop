@@ -5,7 +5,9 @@ import com.example.laptopshop_project.domain.Cart;
 import com.example.laptopshop_project.domain.CartDetail;
 import com.example.laptopshop_project.domain.Products;
 import com.example.laptopshop_project.domain.Users;
+import com.example.laptopshop_project.repository.UserRepository;
 import com.example.laptopshop_project.service.ProductService;
+import com.example.laptopshop_project.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,9 +21,14 @@ import java.util.List;
 @Controller
 public class ItemProductController {
     private final ProductService productService;
+    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public ItemProductController(ProductService productService) {
+    public ItemProductController(ProductService productService, UserRepository userRepository,
+                                 UserService userService) {
         this.productService = productService;
+        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     @GetMapping("/product/{id}")
@@ -52,7 +59,7 @@ public class ItemProductController {
         List<CartDetail> cartDetails = cart == null ? new ArrayList<>() : cart.getCartDetails();
         double totalPrice = 0;
         for (CartDetail cartDetail : cartDetails) {
-            totalPrice += cartDetail.getPrice();
+            totalPrice += cartDetail.getQuantity() * cartDetail.getPrice();
         }
         model.addAttribute("cartDetails", cartDetails);
         model.addAttribute("totalPrice", totalPrice);
@@ -83,22 +90,34 @@ public class ItemProductController {
             @RequestParam("receiverAddress") String receiverAddress,
             @RequestParam("receiverPhone") String receiverPhone) {
         HttpSession session = request.getSession(false);
-        return "redirect:/";
+        long id = (long) session.getAttribute("id");
+        Users currentUser = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        this.productService.handlePlaceOrder(currentUser, session, receiverName, receiverAddress, receiverPhone);
+        return "redirect:/thank";
+    }
+
+    @GetMapping("/thank")
+    public String getThankYouPage(Model model) {
+        return "client/cart/thanks";
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/checkout")
     public String GetCheckout(Model model, HttpServletRequest req) {
-        Users user = new Users();
+//        Users user = new Users();
         HttpSession session = req.getSession(false);
         long id = (long) session.getAttribute("id");
-        user.setId(id);
+//        user.setId(id);
+
+        Users user = userService.getUserById(id);
 
         Cart cart = this.productService.fetchByUser(user);
+
         List<CartDetail> cartDetails = cart == null ? new ArrayList<>() : cart.getCartDetails();
         double totalPrice = 0;
         for (CartDetail cartDetail : cartDetails) {
-            totalPrice += cartDetail.getPrice();
+            totalPrice += cartDetail.getQuantity() * cartDetail.getPrice();
         }
         model.addAttribute("cartDetails", cartDetails);
         model.addAttribute("totalPrice", totalPrice);

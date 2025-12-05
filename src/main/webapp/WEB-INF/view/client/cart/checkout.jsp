@@ -92,23 +92,38 @@
                             </p>
                         </td>
                         <td>
-                            <div class="input-group quantity mt-4" style="width: 100px;">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-minus rounded-circle bg-light border">
-                                        <i class="fa fa-minus"></i>
-                                    </button>
-                                </div>
-                                <input type="text" class="form-control form-control-sm text-center border-0"
-                                       value="${cartDetails.quantity}"
-                                       data-cart-detail-id="${cartDetails.id}"
-                                       data-cart-detail-price="${cartDetails.price}"
-                                       data-cart-detail-index="${status.index}">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-plus rounded-circle bg-light border">
-                                        <i class="fa fa-plus"></i>
-                                    </button>
-                                </div>
+                                <%--                            <div class="input-group quantity mt-4" style="width: 100px;">--%>
+                                <%--                                <input type="text" class="form-control form-control-sm text-center border-0"--%>
+                                <%--                                       value="${cartDetails.quantity}"--%>
+                                <%--                                       data-cart-detail-id="${cartDetails.id}"--%>
+                                <%--                                       data-cart-detail-price="${cartDetails.price}"--%>
+                                <%--                                       data-cart-detail-index="${status.index}">--%>
+                                <%--                            </div>--%>
+                        <td>
+                            <div class="input-group quantity mt-4" style="width: 120px;">
+
+                                <!-- nút - -->
+                                <button class="btn btn-sm btn-minus">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+
+                                <!-- HIỂN THỊ SỐ LƯỢNG -->
+                                <span class="form-control form-control-sm text-center bg-white border-0 show-qty"
+                                      data-cart-detail-id="${cartDetails.id}"
+                                      data-cart-detail-price="${cartDetails.price}">
+                                        ${cartDetails.quantity}
+                                </span>
+
+                                <!-- INPUT ẨN ĐỂ JS LẤY GIÁ TRỊ -->
+                                <input type="hidden" class="real-qty" value="${cartDetails.quantity}">
+
+                                <!-- nút + -->
+                                <button class="btn btn-sm btn-plus">
+                                    <i class="fa fa-plus"></i>
+                                </button>
                             </div>
+                        </td>
+
                         </td>
                         <td>
                             <p class="mb-0 mt-4" data-cart-detail-id="${cartDetails.id}">

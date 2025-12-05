@@ -58,77 +58,80 @@
                 </ol>
             </nav>
         </div>
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th scope="col">Sản phẩm</th>
-                    <th scope="col">Tên</th>
-                    <th scope="col">Giá cả</th>
-                    <th scope="col">Số lượng</th>
-                    <th scope="col">Thành tiền</th>
-                    <th scope="col">Xử lí</th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach items="${cartDetails}" var="cartDetails">
+        <form id="cartForm" action="/confirm-checkout" method="post">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
                     <tr>
-                        <th scope="row">
-                            <div class="d-flex align-items-center">
-                                <img src="images/product/${cartDetails.products.image}"
-                                     class="img-fluid me-5 rounded-circle"
-                                     style="width: 80px; height: 80px;" alt="">
-                            </div>
-                        </th>
-                        <td>
-                            <p class="mb-0 mt-4">
-                                <a href="/product/${cartDetails.products.id}" target="_blank"></a>
-                                    ${cartDetails.products.name}</p>
-                        </td>
-                        <td>
-                            <p class="mb-0 mt-4">
-                                <fmt:formatNumber type="number"
-                                                  value="${cartDetails.price}"/> đ
-                            </p>
-                        </td>
-                        <td>
-                            <div class="input-group quantity mt-4" style="width: 100px;">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-minus rounded-circle bg-light border">
-                                        <i class="fa fa-minus"></i>
-                                    </button>
-                                </div>
-                                <input type="text" class="form-control form-control-sm text-center border-0"
-                                       value="${cartDetails.quantity}"
-                                       data-cart-detail-id="${cartDetails.id}"
-                                       data-cart-detail-price="${cartDetails.price}"
-                                       data-cart-detail-index="${status.index}">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-plus rounded-circle bg-light border">
-                                        <i class="fa fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <p class="mb-0 mt-4" data-cart-detail-id="${cartDetails.id}">
-                                <fmt:formatNumber type="number"
-                                                  value="${cartDetails.price * cartDetails.quantity}"/> đ
-                            </p>
-                        </td>
-                        <td>
-                            <form method="post" action="/delete-cart-product/${cartDetails.id}">
-                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                <button class="btn btn-md rounded-circle bg-light border mt-4">
-                                    <i class="fa fa-times text-danger"></i>
-                                </button>
-                            </form>
-                        </td>
+                        <th>Sản phẩm</th>
+                        <th>Tên</th>
+                        <th>Giá cả</th>
+                        <th>Số lượng</th>
+                        <th>Thành tiền</th>
+                        <th>Xử lí</th>
                     </tr>
-                </c:forEach>
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${cartDetails}" var="cartDetail" varStatus="status">
+                        <tr>
+                            <td>
+                                <img src="images/product/${cartDetail.products.image}" class="img-fluid rounded-circle"
+                                     style="width:80px;height:80px;">
+                            </td>
+                            <td>${cartDetail.products.name}</td>
+                            <td>
+                                <fmt:formatNumber type="number" value="${cartDetail.price}"/> đ
+                            </td>
+                            <td>
+                                <div class="input-group quantity" style="width:100px;">
+                                    <div class="input-group-btn">
+                                        <button type="button"
+                                                class="btn btn-sm btn-minus rounded-circle bg-light border">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                    </div>
+
+                                    <!-- Input số lượng bind vào List<CartDetail> -->
+                                    <input type="text" class="form-control form-control-sm text-center border-0"
+                                           name="cartDetails[${status.index}].quantity"
+                                           value="${cartDetail.quantity}"
+                                           data-cart-detail-id="${cartDetail.id}"
+                                           data-cart-detail-price="${cartDetail.price}"/>
+
+                                    <!-- Hidden để bind id -->
+                                    <input type="hidden" name="cartDetails[${status.index}].id"
+                                           value="${cartDetail.id}"/>
+
+                                    <div class="input-group-btn">
+                                        <button type="button"
+                                                class="btn btn-sm btn-plus rounded-circle bg-light border">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <p data-cart-detail-id="${cartDetail.id}">
+                                    <fmt:formatNumber type="number" value="${cartDetail.price * cartDetail.quantity}"/>
+                                    đ
+                                </p>
+                            </td>
+                            <td>
+                                <form method="post" action="/delete-cart-product/${cartDetail.id}">
+                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                    <button class="btn btn-md rounded-circle bg-light border mt-4">
+                                        <i class="fa fa-times text-danger"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+        </form>
         <div class="mt-5 row g-4 justify-content-start">
             <div class="col-12 col-md-8"></div>
             <div class="bg-light rounded">
@@ -206,6 +209,112 @@
 
 <!-- Template Javascript -->
 <script src="/client/js/main.js"></script>
-</body>
+<%--js tang giam so luong--%>
+<script>
+    (function ($) {
+        "use strict";
 
+        // --- helper: format tiền theo vi-VN (không hiển thị thập phân) ---
+        function formatCurrency(value) {
+            const formatter = new Intl.NumberFormat('vi-VN', {
+                style: 'decimal',
+                minimumFractionDigits: 0,
+            });
+            return formatter.format(Math.round(value)); // integer
+        }
+
+        // Lấy CSRF token (nếu Spring Security bật CSRF)
+        function getCsrf() {
+            const param = $('meta[name="_csrf_parameter"]').attr('content') || $("input[name='_csrf']").attr('name');
+            const token = $('meta[name="_csrf"]').attr('content') || $("input[name='_csrf']").val();
+            return {param, token};
+        }
+
+        // Remove any previous bindings on .quantity button để tránh double-binding
+        $(document).off('click', '.quantity button');
+
+        // Gắn 1 lần duy nhất
+        $(document).on('click', '.quantity button', function (e) {
+            e.preventDefault();
+
+            const button = $(this);
+            // tìm input số lượng nằm trong cùng .quantity (an toàn hơn dùng closest)
+            const parent = button.closest('.quantity');
+            const input = parent.find("input[name*='quantity']").first(); // chắc chắn chọn đúng input
+            if (!input || input.length === 0) return;
+
+            // Parse cẩn thận — bỏ dấu không số nếu có
+            let oldVal = parseInt((input.val() + '').replace(/[^\d-]/g, ''), 10);
+            if (isNaN(oldVal) || oldVal < 1) oldVal = 1;
+
+            const isPlus = button.hasClass('btn-plus');
+            const newVal = isPlus ? oldVal + 1 : Math.max(1, oldVal - 1);
+
+            // Cập nhật input (giá trị sẽ được submit hoặc dùng cho AJAX)
+            input.val(newVal);
+
+            // Lấy data từ input
+            const price = parseFloat(input.attr("data-cart-detail-price")) || 0;
+            const id = input.attr("data-cart-detail-id");
+
+            // Cập nhật thành tiền của từng dòng
+            const priceElement = $(`p[data-cart-detail-id='${id}']`);
+            if (priceElement.length) {
+                const newPrice = price * newVal;
+                priceElement.text(formatCurrency(newPrice) + " đ");
+            }
+
+            // Tính tổng từ tất cả input còn lại trên client
+            let total = 0;
+            $("input[data-cart-detail-price]").each(function () {
+                const p = parseFloat($(this).attr("data-cart-detail-price")) || 0;
+                let q = parseInt(($(this).val() + '').replace(/[^\d-]/g, ''), 10);
+                if (isNaN(q) || q < 1) q = 1;
+                total += p * q;
+            });
+
+            // Cập nhật các chỗ hiển thị tổng
+            $("p[data-cart-total-price]").each(function () {
+                $(this).text(formatCurrency(total) + " đ");
+                $(this).attr("data-cart-total-price", total);
+            });
+
+            // Gọi AJAX để cập nhật DB ngay (tùy bạn có muốn update on change hay chờ submit)
+            // Thực hiện nhẹ: gửi id & newVal tới /cart/update
+            const csrf = getCsrf();
+            const data = {};
+            data['id'] = id;
+            data['quantity'] = newVal;
+
+            // If CSRF param name present, thêm param
+            if (csrf.param && csrf.token) {
+                data[csrf.param] = csrf.token;
+            }
+
+            $.ajax({
+                url: "/cart/update",
+                method: "POST",
+                data: data,
+                success: function (res) {
+                    // res có thể trả về tổng tiền (server hiện trả về total)
+                    if (!isNaN(res)) {
+                        const totalFromServer = parseFloat(res);
+                        $("p[data-cart-total-price]").text(formatCurrency(totalFromServer) + " đ");
+                        $("p[data-cart-total-price]").attr("data-cart-total-price", totalFromServer);
+                    }
+                },
+                error: function (err) {
+                    console.error("Lỗi khi cập nhật số lượng lên server:", err);
+                    // Optionally: rollback giá trị UI nếu server lỗi
+                    // input.val(oldVal);
+                    // Cập nhật lại thành tiền và tổng theo oldVal nếu rollback cần thiết
+                }
+            });
+
+        });
+
+    })(jQuery);
+
+</script>
+</body>
 </html>

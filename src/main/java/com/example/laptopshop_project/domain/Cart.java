@@ -30,6 +30,7 @@ public class Cart {
     private Users user;
 
     //cart_detail_id
-    @OneToMany(mappedBy = "cart")
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartDetail> cartDetails;
+
 }

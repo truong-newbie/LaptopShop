@@ -5,10 +5,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Entity
-@Table(name ="order_detail")
+@Table(name = "order_detail")
 @Getter
 @Setter
 public class OrderDetail {
@@ -21,11 +19,11 @@ public class OrderDetail {
     private int quantity;
 
     @ManyToOne
-    @JoinColumn(name=" product_id")
+    @JoinColumn(name = "product_id")
     private Products products;
 
     @ManyToOne
-    @JoinColumn(name="order_id")
+    @JoinColumn(name = "order_id")
     private Orders orders;
 
 

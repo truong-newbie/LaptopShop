@@ -1,13 +1,16 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
     <title>LaptopShop_DoDangTruong</title>
-    <link href="/css/styles.css" rel="stylesheet" />
+    <link href="/css/styles.css" rel="stylesheet"/>
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 <body class="sb-nav-fixed">
@@ -22,13 +25,44 @@
                     <li class="breadcrumb-item"><a href="/admin"> Dashboard </a></li>
                     <li class="breadcrumb-item active">Orders</li>
                 </ol>
-                <div> table order</div>
+                <h3 class="mb-4">Table Orders</h3>
+
+                <table class="table table-bordered align-middle text-center">
+                    <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Total Price</th>
+                        <th>User</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <c:forEach var="order" items="${orders}">
+                        <tr>
+                            <td>${order.id}</td>
+                            <td>${order.totalPrice}</td>
+                            <td>${order.user.fullName}</td>
+                            <td class="fw-bold text-success">${order.status}</td>
+                            <td>
+                                <a href="/admin/order/${order.id}" class="btn btn-success">View</a>
+                                <a href="/admin/order/update/${order.id}" class="btn btn-warning">Update</a>
+                                <a href="/admin/order/delete/${order.id}" class="btn btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                    </c:forEach>
+
+
+                    </tbody>
+                </table>
             </div>
         </main>
         <jsp:include page="../layout/footer.jsp"/>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
 <script src="js/scripts.js"></script>
 
 </body>
