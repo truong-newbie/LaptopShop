@@ -2,7 +2,6 @@ package com.example.laptopshop_project.controller.client;
 
 
 import com.example.laptopshop_project.domain.Orders;
-import com.example.laptopshop_project.domain.Products;
 import com.example.laptopshop_project.domain.Users;
 import com.example.laptopshop_project.domain.dto.RegisterDTO;
 import com.example.laptopshop_project.service.OrderService;
@@ -11,7 +10,6 @@ import com.example.laptopshop_project.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -43,10 +41,10 @@ public class HomePageController {
     @GetMapping
     public String getHomePage(Model model) {
         Pageable pageable = PageRequest.of(0, 10);
-        Page<Products> products = productService.getAllProducts(pageable);
-        List<Products> listProducts = products.getContent();
-        
-        model.addAttribute("products", listProducts);
+//        Page<Products> products = productService.getAllProducts(pageable);
+//        List<Products> listProducts = products.getContent();
+//
+//        model.addAttribute("products", listProducts);
 
         return "client/homepage/show";
     }
