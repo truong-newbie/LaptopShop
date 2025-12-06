@@ -3,12 +3,12 @@ package com.example.laptopshop_project.controller.admin;
 import com.example.laptopshop_project.domain.Orders;
 import com.example.laptopshop_project.service.OrderDetailService;
 import com.example.laptopshop_project.service.OrderService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,9 +24,25 @@ public class OrderController {
     }
 
     @GetMapping("/admin/order")
-    public String GetOrder(Model model) {
-        List<Orders> orders = this.orderService.getAll();
-        model.addAttribute("orders", orders);
+    public String GetOrder(Model model, @RequestParam("page") Optional<String> pageOptional) {
+        int page = 1;
+        try {
+            if (pageOptional.isPresent()) {
+                //convert from string to int
+                page = Integer.parseInt(pageOptional.get());
+            } else {
+                //page=1
+            }
+        } catch (Exception e) {
+            //page=1
+            //todo1 : handle exceptoin
+        }
+        Pageable pageable = PageRequest.of(page - 1, 2);
+        Page<Orders> orders = orderService.getAll(pageable);
+        List<Orders> listOrders = orders.getContent();
+        model.addAttribute("orders", listOrders);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", orders.getTotalPages());
         return "admin/order/show";
     }
 

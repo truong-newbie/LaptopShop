@@ -5,16 +5,18 @@ import com.example.laptopshop_project.domain.Users;
 import com.example.laptopshop_project.service.UploadService;
 import com.example.laptopshop_project.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import java.util.List;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.List;
+import java.util.Optional;
 
 
 @Controller
@@ -23,10 +25,10 @@ public class UserController {
     private final UploadService uploadService;
     private final PasswordEncoder PasswordEncoder;
 
-    public UserController(UserService userService ,UploadService uploadService, PasswordEncoder PasswordEncoder) {
+    public UserController(UserService userService, UploadService uploadService, PasswordEncoder PasswordEncoder) {
         this.userService = userService;
         this.uploadService = uploadService;
-        this.PasswordEncoder=PasswordEncoder;
+        this.PasswordEncoder = PasswordEncoder;
 
     }
 
@@ -45,8 +47,8 @@ public class UserController {
             // Trả về form để hiển thị lỗi, tránh cho Hibernate ném ConstraintViolationException
             return "admin/user/create";
         }
-        String avatar= this.uploadService.handleSaveUploadFile(file,"avatar");
-        String hashPassword= this.PasswordEncoder.encode(user.getPassword());
+        String avatar = this.uploadService.handleSaveUploadFile(file, "avatar");
+        String hashPassword = this.PasswordEncoder.encode(user.getPassword());
         user.setAvatar(avatar);
         user.setPassword(hashPassword);
         user.setRole(this.userService.getRoleByName(user.getRole().getName()));
@@ -56,9 +58,27 @@ public class UserController {
 //  GETUSERPAGE
 
     @GetMapping("/admin/user")
-    public String getUserPage(Model model) {
-        List<Users> users = userService.getAllUsers();
-        model.addAttribute("users", users);
+    public String getUserPage(Model model,
+                              @RequestParam("page") Optional<String> pageOptional) {
+        int page = 1;
+        try {
+            if (pageOptional.isPresent()) {
+                page = Integer.parseInt(pageOptional.get());
+            } else {
+                //page=1
+            }
+        } catch (Exception e) {
+            //page=1
+            //handle ex if need
+        }
+
+        Pageable pageable = PageRequest.of(page - 1, 2);
+        Page<Users> users = userService.getAllUsers(pageable);
+        List<Users> listUsers = users.getContent();
+
+        model.addAttribute("users", listUsers);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", users.getTotalPages());
         return "admin/user/show";
     }
 

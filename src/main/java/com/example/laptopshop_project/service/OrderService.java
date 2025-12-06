@@ -5,6 +5,8 @@ import com.example.laptopshop_project.domain.Orders;
 import com.example.laptopshop_project.domain.Users;
 import com.example.laptopshop_project.repository.OrderDetailRepository;
 import com.example.laptopshop_project.repository.OrderRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,8 +23,8 @@ public class OrderService {
         this.orderDetailRepository = orderDetailRepository;
     }
 
-    public List<Orders> getAll() {
-        return this.orderRepository.findAll();
+    public Page<Orders> getAll(Pageable pageable) {
+        return this.orderRepository.findAll(pageable);
     }
 
     public Optional<Orders> fetchOrderById(long id) {

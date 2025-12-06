@@ -8,9 +8,9 @@ import com.example.laptopshop_project.repository.OrderRepository;
 import com.example.laptopshop_project.repository.ProductRepository;
 import com.example.laptopshop_project.repository.RoleRepository;
 import com.example.laptopshop_project.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class UserService {
@@ -32,8 +32,8 @@ public class UserService {
         return this.userRepository.save(user);
     }
 
-    public List<Users> getAllUsers() {
-        return this.userRepository.findAll();
+    public Page<Users> getAllUsers(Pageable pageable) {
+        return this.userRepository.findAll(pageable);
     }
 
     public Users updateUser(long id, Users updatedUser) {
