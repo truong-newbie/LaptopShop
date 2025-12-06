@@ -55,9 +55,9 @@ public class ItemProductController {
         String name = nameOptional.get();
 
         Pageable pageable = PageRequest.of(page - 1, 6);
-        Page<Products> products = productService.getAllProducts(pageable, name);
+        Page<Products> products = productService.getAllProductsWithSpec(pageable, name);
         List<Products> listProducts = products.getContent();
-        
+
         model.addAttribute("products", listProducts);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", products.getTotalPages());

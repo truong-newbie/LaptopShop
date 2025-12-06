@@ -5,12 +5,16 @@ import com.example.laptopshop_project.repository.ProductRepository;
 import com.example.laptopshop_project.service.ProductService;
 import com.example.laptopshop_project.service.UploadService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -38,12 +42,12 @@ public class ProductController {
             //page=1
             //todo1 : handle exceptoin
         }
-//        Pageable pageable = PageRequest.of(page - 1, 2);
-//        Page<Products> products = productService.getAllProducts(pageable);
-//        List<Products> listProducts = products.getContent();
-//        model.addAttribute("products", listProducts);
-//        model.addAttribute("currentPage", page);
-//        model.addAttribute("totalPages", products.getTotalPages());
+        Pageable pageable = PageRequest.of(page - 1, 2);
+        Page<Products> products = productService.getAllProducts(pageable);
+        List<Products> listProducts = products.getContent();
+        model.addAttribute("products", listProducts);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", products.getTotalPages());
         return "admin/product/show";
     }
 
