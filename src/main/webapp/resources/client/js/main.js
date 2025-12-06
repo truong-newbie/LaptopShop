@@ -129,6 +129,20 @@
         })
     });
 
+    //add active class to header
+    const navElement = $("navbarCollapse")
+    const currentUrl = window.location.pathname;
+    navElement.find('a.nav-link').each(function () {
+        const link = $(this); // get the current link in the loop
+        const href = link.attr('href');
+
+        if (href === currentUrl) {
+            link.addClass('active');
+        } else {
+            link.removeClass('active');
+        }
+    });
+
     $('.quantity button').on('click', function () {
         var button = $(this);
         var input = button.parent().parent().find('input');

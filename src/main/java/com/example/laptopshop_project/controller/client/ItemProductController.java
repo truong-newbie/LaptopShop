@@ -10,6 +10,9 @@ import com.example.laptopshop_project.service.ProductService;
 import com.example.laptopshop_project.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ItemProductController {
@@ -29,6 +33,29 @@ public class ItemProductController {
         this.productService = productService;
         this.userRepository = userRepository;
         this.userService = userService;
+    }
+
+    @GetMapping("/products")
+    public String getProductPage(Model model, @RequestParam("page") Optional<String> pageOptional) {
+        int page = 1;
+        try {
+            if (pageOptional.isPresent()) {
+                //convert string to int
+                page = Integer.parseInt(pageOptional.get());
+            } else {
+                //page=1
+            }
+        } catch (Exception e) {
+            //page=1
+            //handle ex
+        }
+        Pageable pageable = PageRequest.of(page - 1, 6);
+        Page<Products> products = productService.getAllProducts(pageable);
+        List<Products> listProducts = products.getContent();
+        model.addAttribute("products", listProducts);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", products.getTotalPages());
+        return "client/homepage/product";
     }
 
     @GetMapping("/product/{id:[0-9]+}")
