@@ -166,6 +166,10 @@
                         <div class="row g-4">
                             <div class="col-lg-12">
                                 <div class="row g-4">
+                                    <c:if test="$totalPages == 0">
+                                        <div>Không tìm thấy sản phẩm</div>
+                                    </c:if>
+
                                     <c:forEach var="product" items="${products}">
                                         <div class="col-md-6 col-lg-4 col-xl-3">
                                             <div class="rounded position-relative fruite-item">
@@ -212,36 +216,38 @@
                     </div>
                 </div>
 
-                <%-- Pagination Start --%>
-                <div class="pagination d-flex justify-content-center mt-5">
+                <c:if test="$totalPages > 0">
+                    <%-- Pagination Start --%>
+                    <div class="pagination d-flex justify-content-center mt-5">
 
-                    <li class="page-item ${1 eq currentPage ? 'disabled' : ''}">
-                        <a class="${1 eq currentPage ? 'rounded disabled' : 'rounded'}"
-                           href="${1 eq currentPage ? 'javascript:void(0)' : '/products?page='.concat(currentPage - 1)}"
-                           aria-label="Previous">
-                            «
-                        </a>
-                    </li>
-
-                    <c:forEach begin="0" end="${totalPages - 1}" varStatus="loop">
-                        <li class="page-item">
-                            <a class="${(loop.index + 1) eq currentPage ? 'active rounded' : 'rounded'}"
-                               href="/products?page=${loop.index + 1}">
-                                    ${loop.index + 1}
+                        <li class="page-item ${1 eq currentPage ? 'disabled' : ''}">
+                            <a class="${1 eq currentPage ? 'rounded disabled' : 'rounded'}"
+                               href="${1 eq currentPage ? 'javascript:void(0)' : '/products?page='.concat(currentPage - 1)}"
+                               aria-label="Previous">
+                                «
                             </a>
                         </li>
-                    </c:forEach>
 
-                    <li class="page-item ${totalPages eq currentPage ? 'disabled' : ''}">
-                        <a class="${totalPages eq currentPage ? 'rounded disabled' : 'rounded'}"
-                           href="${totalPages eq currentPage ? 'javascript:void(0)' : '/products?page='.concat(currentPage + 1)}"
-                           aria-label="Next">
-                            »
-                        </a>
-                    </li>
+                        <c:forEach begin="0" end="${totalPages - 1}" varStatus="loop">
+                            <li class="page-item">
+                                <a class="${(loop.index + 1) eq currentPage ? 'active rounded' : 'rounded'}"
+                                   href="/products?page=${loop.index + 1}">
+                                        ${loop.index + 1}
+                                </a>
+                            </li>
+                        </c:forEach>
 
-                </div>
-                <%-- Pagination End --%>
+                        <li class="page-item ${totalPages eq currentPage ? 'disabled' : ''}">
+                            <a class="${totalPages eq currentPage ? 'rounded disabled' : 'rounded'}"
+                               href="${totalPages eq currentPage ? 'javascript:void(0)' : '/products?page='.concat(currentPage + 1)}"
+                               aria-label="Next">
+                                »
+                            </a>
+                        </li>
+
+                    </div>
+                    <%-- Pagination End --%>
+                </c:if>
             </div>
         </div>
     </div>
@@ -292,6 +298,11 @@
         searchParams.set('page', '1');
         searchParams.set('sort', sortValue);
 
+        //reset
+        searchParams.delete('factory');
+        searchParams.delete('target');
+        searchParams.delete('price');
+
         if (factoryArr.length > 0) {
             searchParams.set('factory', factoryArr.join(','));
         }
@@ -306,50 +317,50 @@
         window.location.href = currentUrl.toString();
 
 
-        // Khởi tạo trạng thái checkbox dựa trên URL
-        function initializeFilters() {
-            const currentUrl = new URL(window.location.href);
-            const searchParams = currentUrl.searchParams;
+        <%--// Khởi tạo trạng thái checkbox dựa trên URL--%>
+        <%--function initializeFilters() {--%>
+        <%--    const currentUrl = new URL(window.location.href);--%>
+        <%--    const searchParams = currentUrl.searchParams;--%>
 
-            // 1. Xử lý Hãng sản xuất (factory)
-            const factoryParam = searchParams.get('factory');
-            if (factoryParam) {
-                const factoryValues = factoryParam.split(',');
-                factoryValues.forEach(function (val) {
-                    // Tìm checkbox có value khớp trong div factoryFilter và đặt là checked
-                    $(`#factoryFilter .form-check-input[value="${val}"]`).prop('checked', true);
-                });
-            }
+        <%--    // 1. Xử lý Hãng sản xuất (factory)--%>
+        <%--    const factoryParam = searchParams.get('factory');--%>
+        <%--    if (factoryParam) {--%>
+        <%--        const factoryValues = factoryParam.split(',');--%>
+        <%--        factoryValues.forEach(function (val) {--%>
+        <%--            // Tìm checkbox có value khớp trong div factoryFilter và đặt là checked--%>
+        <%--            $(`#factoryFilter .form-check-input[value="${val}"]`).prop('checked', true);--%>
+        <%--        });--%>
+        <%--    }--%>
 
-            // 2. Xử lý Mục đích sử dụng (target)
-            const targetParam = searchParams.get('target');
-            if (targetParam) {
-                const targetValues = targetParam.split(',');
-                targetValues.forEach(function (val) {
-                    $(`#targetFilter .form-check-input[value="${val}"]`).prop('checked', true);
-                });
-            }
+        <%--    // 2. Xử lý Mục đích sử dụng (target)--%>
+        <%--    const targetParam = searchParams.get('target');--%>
+        <%--    if (targetParam) {--%>
+        <%--        const targetValues = targetParam.split(',');--%>
+        <%--        targetValues.forEach(function (val) {--%>
+        <%--            $(`#targetFilter .form-check-input[value="${val}"]`).prop('checked', true);--%>
+        <%--        });--%>
+        <%--    }--%>
 
-            // 3. Xử lý Mức giá (price)
-            const priceParam = searchParams.get('price');
-            if (priceParam) {
-                const priceValues = priceParam.split(',');
-                priceValues.forEach(function (val) {
-                    $(`#priceFilter .form-check-input[value="${val}"]`).prop('checked', true);
-                });
-            }
+        <%--    // 3. Xử lý Mức giá (price)--%>
+        <%--    const priceParam = searchParams.get('price');--%>
+        <%--    if (priceParam) {--%>
+        <%--        const priceValues = priceParam.split(',');--%>
+        <%--        priceValues.forEach(function (val) {--%>
+        <%--            $(`#priceFilter .form-check-input[value="${val}"]`).prop('checked', true);--%>
+        <%--        });--%>
+        <%--    }--%>
 
-            // 4. Xử lý Sắp xếp (sort)
-            const sortParam = searchParams.get('sort');
-            if (sortParam) {
-                // Đặt thuộc tính checked cho radio button có value khớp
-                $(`input[name="radio-sort"][value="${sortParam}"]`).prop('checked', true);
-            }
+        <%--    // 4. Xử lý Sắp xếp (sort)--%>
+        <%--    const sortParam = searchParams.get('sort');--%>
+        <%--    if (sortParam) {--%>
+        <%--        // Đặt thuộc tính checked cho radio button có value khớp--%>
+        <%--        $(`input[name="radio-sort"][value="${sortParam}"]`).prop('checked', true);--%>
+        <%--    }--%>
 
-        }
+        <%--}--%>
 
-        // Gọi hàm này khi DOM đã tải xong
-        initializeFilters();
+        <%--// Gọi hàm này khi DOM đã tải xong--%>
+        <%--initializeFilters();--%>
     });
 </script>
 </body>
