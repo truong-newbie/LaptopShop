@@ -19,7 +19,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,8 +57,8 @@ public class ItemProductController {
         }
 
         Pageable pageable = PageRequest.of(page - 1, 60);
-//        String name = nameOptional.isPresent() ? nameOptional.get() : "";
-//        Page<Products> products = productService.getAllProductsWithSpec(pageable, name);
+        String name = nameOptional.isPresent() ? nameOptional.get() : "";
+        Page<Products> products = productService.getAllProductsWithSpec(pageable, name);
 
         //case 1
 //        double min = minOptional.isPresent() ? Double.parseDouble(minOptional.get()) : 0;
@@ -82,8 +81,8 @@ public class ItemProductController {
 //        Page<Products> products = this.productService.fetchProductsWithSpec(pageable, price);
 
         //case6
-        List<String> price = Arrays.asList(priceOptional.get().split(","));
-        Page<Products> products = this.productService.fetchProductsWithSpec(pageable, price);
+//        List<String> price = Arrays.asList(priceOptional.get().split(","));
+//        Page<Products> products = this.productService.fetchProductsWithSpec(pageable, price);
 
         List<Products> listProducts = products.getContent();
 

@@ -7,7 +7,6 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,9 +41,9 @@ public class ProductService {
         return this.productRepository.findAll(page);
     }
 
-//    public Page<Products> getAllProductsWithSpec(Pageable page, String name) {
-//        return this.productRepository.findAll(ProductSpecs.nameLike(name), page);
-//    }
+    public Page<Products> getAllProductsWithSpec(Pageable page, String name) {
+        return this.productRepository.findAll(ProductSpecs.nameLike(name), page);
+    }
 
     //case1
 //    public Page<Products> fetchProductsWithSpec(Pageable page, double min) {
@@ -82,45 +81,45 @@ public class ProductService {
 //    }
 
     //case6
-    public Page<Products> fetchProductsWithSpec(Pageable page, List<String> price) {
-        Specification<Products> combinedSpec = (root, query, criteriaBuilder) -> criteriaBuilder.disjunction();
-        int count = 0;
-        for (String p : price) {
-            double min = 0;
-            double max = 0;
+//    public Page<Products> fetchProductsWithSpec(Pageable page, List<String> price) {
+//        Specification<Products> combinedSpec = (root, query, criteriaBuilder) -> criteriaBuilder.disjunction();
+//        int count = 0;
+//        for (String p : price) {
+//            double min = 0;
+//            double max = 0;
+//
+//            //set the appropriate min and max based on the price range string
+//            switch (p) {
+//                case "10-toi-15-trieu":
+//                    min = 10000000;
+//                    max = 15000000;
+//                    count++;
+//                    break;
+//                case "15-toi-20-trieu":
+//                    min = 15000000;
+//                    max = 20000000;
+//                    count++;
+//                    break;
+//                case "20-toi-30-trieu":
+//                    min = 20000000;
+//                    max = 30000000;
+//                    count++;
+//                    break;
+//                //add more cases as needed
+//            }
+//            if (min != 0 && max != 0) {
+//                Specification<Products> rangeSpec = ProductSpecs.matchMultiplePrice(min, max);
+//                combinedSpec = combinedSpec.or(rangeSpec);
+//            }
+//        }
 
-            //set the appropriate min and max based on the price range string
-            switch (p) {
-                case "10-toi-15-trieu":
-                    min = 10000000;
-                    max = 15000000;
-                    count++;
-                    break;
-                case "15-toi-20-trieu":
-                    min = 15000000;
-                    max = 20000000;
-                    count++;
-                    break;
-                case "20-toi-30-trieu":
-                    min = 20000000;
-                    max = 30000000;
-                    count++;
-                    break;
-                //add more cases as needed
-            }
-            if (min != 0 && max != 0) {
-                Specification<Products> rangeSpec = ProductSpecs.matchMultiplePrice(min, max);
-                combinedSpec = combinedSpec.or(rangeSpec);
-            }
-        }
-
-        //check if any ranges were added combinedSpec is empty
-        if (count == 0) {
-            return this.productRepository.findAll(page);
-        }
-
-        return this.productRepository.findAll(combinedSpec, page);
-    }
+    //check if any ranges were added combinedSpec is empty
+//        if (count == 0) {
+//            return this.productRepository.findAll(page);
+//        }
+//
+//        return this.productRepository.findAll(combinedSpec, page);
+//    }
 
 
     public Optional<Products> getProductById(long id) {

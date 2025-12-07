@@ -41,7 +41,7 @@
                 <div class="row g-4">
 
 
-                    <div class="col-12">
+                    <div class="col-12" id="factoryFilter">
                         <div class="mb-2"><b>Hãng sản xuất</b></div>
 
                         <div class="form-check form-check-inline">
@@ -67,7 +67,7 @@
 
                     <hr class="my-4">
 
-                    <div class="col-12">
+                    <div class="col-12" id="targetFilter">
                         <div class="mb-2"><b>Mục đích sử dụng</b></div>
 
                         <div class="form-check form-check-inline">
@@ -97,7 +97,7 @@
                     </div>
 
                     <hr class="my-4">
-                    <div class="col-12">
+                    <div class="col-12" id="priceFilter">
                         <div class="mb-2"><b>Mức giá</b></div>
 
                         <div class="form-check form-check-inline">
@@ -128,30 +128,34 @@
                         <div class="mb-2"><b>Sắp xếp</b></div>
 
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="sortPrice" id="sort-asc" value="ASC">
-                            <label class="form-check-label" for="sort-asc">
+                            <input class="form-check-input" type="radio" name="radio-sort" id="sort-1"
+                                   value="gia-tang-dan">
+                            <label class="form-check-label" for="sort-1">
                                 Giá tăng dần
                             </label>
                         </div>
 
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="sortPrice" id="sort-desc" value="DESC">
-                            <label class="form-check-label" for="sort-desc">
+                            <input class="form-check-input" type="radio" name="radio-sort" id="sort-2"
+                                   value="gia-giam-dan">
+                            <label class="form-check-label" for="sort-2">
                                 Giá giảm dần
                             </label>
                         </div>
 
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="sortPrice" id="sort-none" value="NONE"
-                                   checked>
-                            <label class="form-check-label" for="sort-none">
+                            <input class="form-check-input" type="radio" name="radio-sort" id="sort-3" checked
+                                   value="gia-nothing">
+                            <label class="form-check-label" for="sort-3">
                                 Không sắp xếp
                             </label>
                         </div>
+                        <div class="col-12">
+                            <button class="btn btn-warning mt-3" id="btnFilter">
+                                LỌC SẢN PHẨM
+                            </button>
+                        </div>
 
-                        <button class="btn btn-warning mt-3">
-                            LỌC SẢN PHẨM
-                        </button>
                     </div>
 
                 </div>
@@ -256,5 +260,97 @@
 <script src="/client/lib/owlcarousel/owl.carousel.min.js"></script>
 
 <script src="/client/js/main.js"></script>
+<script>
+    $('#btnFilter').click(function (event) {
+        event.preventDefault();
+        let factoryArr = [];
+        let targetArr = [];
+        let priceArr = [];
+
+        //factory filter
+        $('#factoryFilter .form-check-input:checked').each(function () {
+            factoryArr.push($(this).val());
+        });
+
+        //target filter
+        $('#targetFilter .form-check-input:checked').each(function () {
+            targetArr.push($(this).val());
+        });
+
+        //price filter
+        $('#priceFilter .form-check-input:checked').each(function () {
+            priceArr.push($(this).val());
+        });
+
+        //sort order
+        let sortValue = $('input[name="radio-sort"]:checked').val();
+
+        const currentUrl = new URL(window.location.href);
+        const searchParams = currentUrl.searchParams;
+
+        //add or update query parameters
+        searchParams.set('page', '1');
+        searchParams.set('sort', sortValue);
+
+        if (factoryArr.length > 0) {
+            searchParams.set('factory', factoryArr.join(','));
+        }
+        if (targetArr.length > 0) {
+            searchParams.set('target', targetArr.join(','));
+        }
+        if (priceArr.length > 0) {
+            searchParams.set('price', priceArr.join(','));
+        }
+
+        //update the url and reload the page
+        window.location.href = currentUrl.toString();
+
+
+        // Khởi tạo trạng thái checkbox dựa trên URL
+        function initializeFilters() {
+            const currentUrl = new URL(window.location.href);
+            const searchParams = currentUrl.searchParams;
+
+            // 1. Xử lý Hãng sản xuất (factory)
+            const factoryParam = searchParams.get('factory');
+            if (factoryParam) {
+                const factoryValues = factoryParam.split(',');
+                factoryValues.forEach(function (val) {
+                    // Tìm checkbox có value khớp trong div factoryFilter và đặt là checked
+                    $(`#factoryFilter .form-check-input[value="${val}"]`).prop('checked', true);
+                });
+            }
+
+            // 2. Xử lý Mục đích sử dụng (target)
+            const targetParam = searchParams.get('target');
+            if (targetParam) {
+                const targetValues = targetParam.split(',');
+                targetValues.forEach(function (val) {
+                    $(`#targetFilter .form-check-input[value="${val}"]`).prop('checked', true);
+                });
+            }
+
+            // 3. Xử lý Mức giá (price)
+            const priceParam = searchParams.get('price');
+            if (priceParam) {
+                const priceValues = priceParam.split(',');
+                priceValues.forEach(function (val) {
+                    $(`#priceFilter .form-check-input[value="${val}"]`).prop('checked', true);
+                });
+            }
+
+            // 4. Xử lý Sắp xếp (sort)
+            const sortParam = searchParams.get('sort');
+            if (sortParam) {
+                // Đặt thuộc tính checked cho radio button có value khớp
+                $(`input[name="radio-sort"][value="${sortParam}"]`).prop('checked', true);
+            }
+
+        }
+
+        // Gọi hàm này khi DOM đã tải xong
+        initializeFilters();
+    });
+</script>
 </body>
 </html>
