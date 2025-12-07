@@ -222,7 +222,7 @@
 
                         <li class="page-item ${1 eq currentPage ? 'disabled' : ''}">
                             <a class="${1 eq currentPage ? 'rounded disabled' : 'rounded'}"
-                               href="${1 eq currentPage ? 'javascript:void(0)' : '/products?page='.concat(currentPage - 1)}"
+                               href="${1 eq currentPage ? 'javascript:void(0)' : '/products?page='.concat(currentPage - 1)}${queryString}"
                                aria-label="Previous">
                                 «
                             </a>
@@ -231,7 +231,7 @@
                         <c:forEach begin="0" end="${totalPages - 1}" varStatus="loop">
                             <li class="page-item">
                                 <a class="${(loop.index + 1) eq currentPage ? 'active rounded' : 'rounded'}"
-                                   href="/products?page=${loop.index + 1}">
+                                   href="/products?page=${loop.index + 1}${queryString}">
                                         ${loop.index + 1}
                                 </a>
                             </li>
@@ -239,7 +239,7 @@
 
                         <li class="page-item ${totalPages eq currentPage ? 'disabled' : ''}">
                             <a class="${totalPages eq currentPage ? 'rounded disabled' : 'rounded'}"
-                               href="${totalPages eq currentPage ? 'javascript:void(0)' : '/products?page='.concat(currentPage + 1)}"
+                               href="${totalPages eq currentPage ? 'javascript:void(0)' : '/products?page='.concat(currentPage + 1)}${queryString}"
                                aria-label="Next">
                                 »
                             </a>
@@ -301,6 +301,7 @@
         //reset
         searchParams.delete('factory');
         searchParams.delete('target');
+        searchParams.delete('price');
         searchParams.delete('price');
 
         if (factoryArr.length > 0) {

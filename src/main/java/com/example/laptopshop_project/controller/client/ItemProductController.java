@@ -1,10 +1,7 @@
 package com.example.laptopshop_project.controller.client;
 
 
-import com.example.laptopshop_project.domain.Cart;
-import com.example.laptopshop_project.domain.CartDetail;
-import com.example.laptopshop_project.domain.Products;
-import com.example.laptopshop_project.domain.Users;
+import com.example.laptopshop_project.domain.*;
 import com.example.laptopshop_project.domain.dto.ProductCriteriaDTO;
 import com.example.laptopshop_project.repository.UserRepository;
 import com.example.laptopshop_project.service.ProductService;
@@ -14,6 +11,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,7 +35,8 @@ public class ItemProductController {
 
     @GetMapping("/products")
     public String getProductPage(Model model,
-                                 ProductCriteriaDTO productCriteriaDTO) {
+                                 ProductCriteriaDTO productCriteriaDTO,
+                                 HttpServletRequest request) {
         int page = 1;
         try {
             if (productCriteriaDTO.getPage().isPresent()) {
@@ -51,15 +50,35 @@ public class ItemProductController {
             //handle ex
         }
 
-        Pageable pageable = PageRequest.of(page - 1, 60);
+
+        //check sort price
+        Pageable pageable = PageRequest.of(page - 1, 10);
+        if (productCriteriaDTO.getSort() != null && productCriteriaDTO.getSort().isPresent()) {
+            String sort = productCriteriaDTO.getSort().get();
+            if (sort.equals("gia-tang-dan")) {
+                pageable = PageRequest.of(page - 1, 10, Sort.by(Products_.PRICE).ascending());
+
+            } else if (sort.equals("gia-giam-dan")) {
+                pageable = PageRequest.of(page - 1, 10, Sort.by(Products_.PRICE).descending());
+
+            } else {
+                pageable = PageRequest.of(page - 1, 10);
+            }
+        }
         Page<Products> products = this.productService.getAllProducts(pageable);
 
 
         List<Products> listProducts = products.getContent().size() > 0 ? products.getContent() : new ArrayList<Products>();
 
+        String qs = request.getQueryString();
+        if (qs != null && !qs.isBlank()) {
+            //remove page
+            qs = qs.replace("page=" + page, "");
+        }
         model.addAttribute("products", listProducts);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", products.getTotalPages());
+        model.addAttribute(("queryString"), qs);
         return "client/homepage/product";
     }
 
