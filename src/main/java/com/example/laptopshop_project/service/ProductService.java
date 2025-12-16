@@ -49,7 +49,15 @@ public class ProductService {
                 && productCriteriaDTO.getPrice() == null) {
             return this.productRepository.findAll(page);
         }
+
         Specification<Products> combinedSpec = Specification.allOf();
+
+        if (productCriteriaDTO.getKeyword().isPresent()) {
+            String keyword = productCriteriaDTO.getKeyword().get().trim().toLowerCase();
+            combinedSpec = combinedSpec.and((root, query, cb) ->
+                    cb.like(cb.lower(root.get("name")), "%" + keyword + "%"));
+        }
+        
         if (productCriteriaDTO.getTarget() != null && productCriteriaDTO.getTarget().isPresent()) {
             Specification currentSpecs = ProductSpecs.matchListTarget(productCriteriaDTO.getTarget().get());
             combinedSpec = combinedSpec.and(currentSpecs);
@@ -64,6 +72,7 @@ public class ProductService {
         }
         return this.productRepository.findAll(combinedSpec, page);
     }
+
 
     //case1
 //    public Page<Products> fetchProductsWithSpec(Pageable page, double min) {

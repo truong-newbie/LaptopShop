@@ -36,7 +36,8 @@ public class ItemProductController {
     @GetMapping("/products")
     public String getProductPage(Model model,
                                  ProductCriteriaDTO productCriteriaDTO,
-                                 HttpServletRequest request) {
+                                 HttpServletRequest request,
+                                 @RequestParam(required = false) String keyword) {
         int page = 1;
         try {
             if (productCriteriaDTO.getPage().isPresent()) {
@@ -76,6 +77,7 @@ public class ItemProductController {
             //remove page
             qs = qs.replace("page=" + page, "");
         }
+        
         model.addAttribute("products", listProducts);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", products.getTotalPages());

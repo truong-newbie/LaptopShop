@@ -14,4 +14,5 @@ public interface ProductRepository extends JpaRepository<Products, Long>, JpaSpe
     Products save(Products products);
 
     Page<Products> findAll(Specification<Products> spec, Pageable pageable);
+
 }

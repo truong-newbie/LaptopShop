@@ -297,39 +297,44 @@
 <script>
     $('#btnFilter').click(function (event) {
         event.preventDefault();
+
         let factoryArr = [];
         let targetArr = [];
         let priceArr = [];
 
-        //factory filter
+        // ===== FACTORY =====
         $('#factoryFilter .form-check-input:checked').each(function () {
             factoryArr.push($(this).val());
         });
 
-        //target filter
+        // ===== TARGET =====
         $('#targetFilter .form-check-input:checked').each(function () {
             targetArr.push($(this).val());
         });
 
-        //price filter
+        // ===== PRICE =====
         $('#priceFilter .form-check-input:checked').each(function () {
             priceArr.push($(this).val());
         });
 
-        //sort order
+        // ===== SORT =====
         let sortValue = $('input[name="radio-sort"]:checked').val();
 
         const currentUrl = new URL(window.location.href);
         const searchParams = currentUrl.searchParams;
 
-        //add or update query parameters
+        // ===== GIỮ KEYWORD (đoạn bạn hỏi) =====
+        const keyword = searchParams.get('keyword');
+        if (keyword) {
+            searchParams.set('keyword', keyword);
+        }
+
+        // ===== RESET & SET PARAM =====
         searchParams.set('page', '1');
         searchParams.set('sort', sortValue);
 
-        //reset
         searchParams.delete('factory');
         searchParams.delete('target');
-        searchParams.delete('price');
         searchParams.delete('price');
 
         if (factoryArr.length > 0) {
@@ -342,55 +347,51 @@
             searchParams.set('price', priceArr.join(','));
         }
 
-        //update the url and reload the page
+        // ===== REDIRECT =====
         window.location.href = currentUrl.toString();
-
-
-        <%--// Khởi tạo trạng thái checkbox dựa trên URL--%>
-        <%--function initializeFilters() {--%>
-        <%--    const currentUrl = new URL(window.location.href);--%>
-        <%--    const searchParams = currentUrl.searchParams;--%>
-
-        <%--    // 1. Xử lý Hãng sản xuất (factory)--%>
-        <%--    const factoryParam = searchParams.get('factory');--%>
-        <%--    if (factoryParam) {--%>
-        <%--        const factoryValues = factoryParam.split(',');--%>
-        <%--        factoryValues.forEach(function (val) {--%>
-        <%--            // Tìm checkbox có value khớp trong div factoryFilter và đặt là checked--%>
-        <%--            $(`#factoryFilter .form-check-input[value="${val}"]`).prop('checked', true);--%>
-        <%--        });--%>
-        <%--    }--%>
-
-        <%--    // 2. Xử lý Mục đích sử dụng (target)--%>
-        <%--    const targetParam = searchParams.get('target');--%>
-        <%--    if (targetParam) {--%>
-        <%--        const targetValues = targetParam.split(',');--%>
-        <%--        targetValues.forEach(function (val) {--%>
-        <%--            $(`#targetFilter .form-check-input[value="${val}"]`).prop('checked', true);--%>
-        <%--        });--%>
-        <%--    }--%>
-
-        <%--    // 3. Xử lý Mức giá (price)--%>
-        <%--    const priceParam = searchParams.get('price');--%>
-        <%--    if (priceParam) {--%>
-        <%--        const priceValues = priceParam.split(',');--%>
-        <%--        priceValues.forEach(function (val) {--%>
-        <%--            $(`#priceFilter .form-check-input[value="${val}"]`).prop('checked', true);--%>
-        <%--        });--%>
-        <%--    }--%>
-
-        <%--    // 4. Xử lý Sắp xếp (sort)--%>
-        <%--    const sortParam = searchParams.get('sort');--%>
-        <%--    if (sortParam) {--%>
-        <%--        // Đặt thuộc tính checked cho radio button có value khớp--%>
-        <%--        $(`input[name="radio-sort"][value="${sortParam}"]`).prop('checked', true);--%>
-        <%--    }--%>
-
-        <%--}--%>
-
-        <%--// Gọi hàm này khi DOM đã tải xong--%>
-        <%--initializeFilters();--%>
     });
 </script>
+
+<script>
+    $(document).ready(function () {
+        const currentUrl = new URL(window.location.href);
+        const searchParams = currentUrl.searchParams;
+
+        // ===== FACTORY =====
+        const factoryParam = searchParams.get('factory');
+        if (factoryParam) {
+            factoryParam.split(',').forEach(val => {
+                $(`#factoryFilter .form-check-input[value="${val}"]`)
+                    .prop('checked', true);
+            });
+        }
+
+        // ===== TARGET =====
+        const targetParam = searchParams.get('target');
+        if (targetParam) {
+            targetParam.split(',').forEach(val => {
+                $(`#targetFilter .form-check-input[value="${val}"]`)
+                    .prop('checked', true);
+            });
+        }
+
+        // ===== PRICE =====
+        const priceParam = searchParams.get('price');
+        if (priceParam) {
+            priceParam.split(',').forEach(val => {
+                $(`#priceFilter .form-check-input[value="${val}"]`)
+                    .prop('checked', true);
+            });
+        }
+
+        // ===== SORT =====
+        const sortParam = searchParams.get('sort');
+        if (sortParam) {
+            $(`input[name="radio-sort"][value="${sortParam}"]`)
+                .prop('checked', true);
+        }
+    });
+</script>
+
 </body>
 </html>
