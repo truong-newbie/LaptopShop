@@ -65,7 +65,8 @@ public class ItemProductController {
                 pageable = PageRequest.of(page - 1, 10);
             }
         }
-        Page<Products> products = this.productService.getAllProducts(pageable);
+        Page<Products> products =
+                this.productService.getAllProductsWithSpec(pageable, productCriteriaDTO);
 
 
         List<Products> listProducts = products.getContent().size() > 0 ? products.getContent() : new ArrayList<Products>();

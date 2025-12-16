@@ -23,6 +23,13 @@
     <link href="/client/css/bootstrap.min.css" rel="stylesheet">
 
     <link href="/client/css/style.css" rel="stylesheet">
+    <style>
+        .page-link.disabled {
+            color: var(--bs-pagination-disabled-color);
+            pointer-events: none;
+            background-color: var(--bs-pagination-disabled-bg);
+        }
+    </style>
 </head>
 <body>
 
@@ -36,6 +43,27 @@
     <div class="container py-5">
 
         <div class="row g-4">
+            <div class="mb-4">
+                <form action="/products" method="get" class="input-group">
+
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Tìm kiếm sản phẩm..."
+                           name="keyword"
+                           value="${param.keyword}">
+
+                    <!-- giữ lại filter cũ nếu có -->
+                    <input type="hidden" name="factory" value="${param.factory}">
+                    <input type="hidden" name="target" value="${param.target}">
+                    <input type="hidden" name="price" value="${param.price}">
+                    <input type="hidden" name="sort" value="${param.sort}">
+                    <input type="hidden" name="page" value="1">
+
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fa fa-search"></i> Tìm kiếm
+                    </button>
+                </form>
+            </div>
 
             <div class="col-lg-3">
                 <div class="row g-4">

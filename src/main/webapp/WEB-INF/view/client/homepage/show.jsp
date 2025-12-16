@@ -28,6 +28,10 @@
 
     <!-- Template Stylesheet -->
     <link href="/client/css/style.css" rel="stylesheet">
+
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css" rel="stylesheet">
 </head>
 <body>
 
@@ -91,16 +95,16 @@
                                                        class="text-dark fw-bold mb-3">
                                                         <fmt:formatNumber type="number" value="${product.price}"/> đ
                                                     </p>
-                                                    <form action="/add-product-to-cart/${product.id} " method="post">
-                                                        <input type="hidden" name="${_csrf.parameterName}"
-                                                               value="${_csrf.token}"/>
-                                                        <button
-                                                                class="mx-auto btn border border-secondary rounded-pill px-3
+                                                        <%--                                                    <form action="/add-product-to-cart/${product.id} " method="post">--%>
+                                                        <%--                                                        <input type="hidden" name="${_csrf.parameterName}"--%>
+                                                        <%--                                                               value="${_csrf.token}"/>--%>
+                                                    <button data-product-id="${product.id}"
+                                                            class="btnAddToCartHomepage mx-auto btn border border-secondary rounded-pill px-3
                                                             text-primary">
-                                                            <i class="fa fa-shopping-bag me-2 text-primary"></i>
-                                                            Add to cart
-                                                        </button>
-                                                    </form>
+                                                        <i class="fa fa-shopping-bag me-2 text-primary"></i>
+                                                        Add to cart
+                                                    </button>
+                                                        <%--                                                    </form>--%>
                                                 </div>
                                             </div>
                                         </div>
@@ -136,7 +140,7 @@
 <script src="/client/lib/waypoints/waypoints.min.js"></script>
 <script src="/client/lib/lightbox/js/lightbox.min.js"></script>
 <script src="/client/lib/owlcarousel/owl.carousel.min.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
 <!-- Template Javascript -->
 <script src="/client/js/main.js"></script>
 </body>

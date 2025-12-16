@@ -14,11 +14,11 @@
         $(document).ready(() => {
             const avatarFile = $("#avatarFile");
             const orgImage = "${updateProduct.image}";
-                if(orgImage){
-                    const urlImage= "/images/product/" + orgImage;
-                    $("#avatarPreview").attr("src",urlImage);
-                    $("#avatarPreview").css({"display":"block"});
-                }
+            if (orgImage) {
+                const urlImage = "/images/product/" + orgImage;
+                $("#avatarPreview").attr("src", urlImage);
+                $("#avatarPreview").css({"display": "block"});
+            }
             avatarFile.change(function (e) {
                 const imgURL = URL.createObjectURL(e.target.files[0]);
                 $("#avatarPreview").attr("src", imgURL);
@@ -48,7 +48,8 @@
                         <div class="col-md-6 col-12 mx-auto">
                             <h3> Update product</h3>
                             <hr/>
-                            <form:form method="post" action="/admin/product/update/${updateProduct.id}" modelAttribute="updateProduct"
+                            <form:form method="post" action="/admin/product/update/${updateProduct.id}"
+                                       modelAttribute="updateProduct"
                                        class="row"
                                        enctype="multipart/form-data">
                             <div class="mb-3 col-12 col-md-6">
@@ -56,7 +57,8 @@
                                     <form:errors path="name" cssClass="invalid-feedback"/>
                                 </c:set>
                                 <label class="form-label"> Name:</label>
-                                <form:input type="text" class="form-control ${not empty errorName ? 'is-invalid' :''}" path="name"/>
+                                <form:input type="text" class="form-control ${not empty errorName ? 'is-invalid' :''}"
+                                            path="name"/>
                                     ${errorName}
                             </div>
 
@@ -65,7 +67,9 @@
                                     <form:errors path="price" cssClass="invalid-feedback"/>
                                 </c:set>
                                 <label class="form-label"> Price:</label>
-                                <form:input type="number" class="form-control ${not empty errorPrice ? 'is-invalid' : ''}" path="price"/>
+                                <form:input type="number"
+                                            class="form-control ${not empty errorPrice ? 'is-invalid' : ''}"
+                                            path="price"/>
                                     ${errorPrice}
                             </div>
                             <div class="mb-3 col-12">
@@ -73,7 +77,8 @@
                                     <form:errors path="detailDesc" cssClass="invalid-feedback"/>
                                 </c:set>
                                 <label class="form-label">Detail description:</label>
-                                <form:textarea path="detailDesc" type="text" class="form-control ${not empty errorDetailDesc ? 'is-invalid' :''}"/>
+                                <form:textarea path="detailDesc" type="text"
+                                               class="form-control ${not empty errorDetailDesc ? 'is-invalid' :''}"/>
                                     ${errorDetailDesc}
                             </div>
 
@@ -82,7 +87,9 @@
                                     <form:errors path="shortDesc" cssClass="invalid-feedback"/>
                                 </c:set>
                                 <label class="form-label">Short Description:</label>
-                                <form:input type="text" class="form-control ${not empty errorShortDesc ?'is-invalid' :''}" path="shortDesc"/>
+                                <form:input type="text"
+                                            class="form-control ${not empty errorShortDesc ?'is-invalid' :''}"
+                                            path="shortDesc"/>
                                     ${errorShortDesc}
                             </div>
 
@@ -91,7 +98,9 @@
                                     <form:errors path="quantity" cssClass="invalid-feedback"/>
                                 </c:set>
                                 <label class="form-label"> Quantity:</label>
-                                <form:input type="number" class="form-control ${not empty errorQuantity ?'is-invalid' :''}" path="quantity"/>
+                                <form:input type="number"
+                                            class="form-control ${not empty errorQuantity ?'is-invalid' :''}"
+                                            path="quantity"/>
                                     ${errorQuantity}
                             </div>
 
@@ -130,7 +139,7 @@
                         </div>
 
                         <div class="mb-3" align="center">
-                            <button type="submit" class="btn btn-primary ">Create</button>
+                            <button type="submit" class="btn btn-primary ">Update</button>
                         </div>
 
                         </form:form>

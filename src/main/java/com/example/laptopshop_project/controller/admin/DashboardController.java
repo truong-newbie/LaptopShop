@@ -19,6 +19,10 @@ public class DashboardController {
         model.addAttribute("countProducts", this.userService.countProducts());
         model.addAttribute("countOrders", this.userService.countOrders());
 
+        model.addAttribute("doanhThuThang", 35000000);
+        model.addAttribute("pendingOrders", 12);
+        model.addAttribute("bestSellerName", "MacBook Air M1");
+
 
         return "admin/dashboard/show";
     }
